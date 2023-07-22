@@ -10,7 +10,9 @@ export const tokenControl = async (req, res, next) => {
     }
     try {
         const decoded = await jwt.verify(token, "secret");
+        console.log(decoded);
         req.token = token;
+        req.user = decoded;
         next();
     } catch (error) {
         return res.status(403).send({
