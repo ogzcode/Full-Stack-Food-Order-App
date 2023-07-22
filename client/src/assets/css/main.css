@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+ul,
+nav,
+body,
+h1,
+h2,
+h4,
+h6,
+p,
+figure {
+    margin: 0;
+    padding: 0;
+}
+
+a,
+button {
+    transition: all 0.3s ease;
+}
+
+/* Bootstrap grid system  */
+
+html {
+    box-sizing: border-box;
+    -ms-overflow-style: scrollbar;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+.container {
+    width: 100%;
+    max-width: 1600px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container-inner,
+.container-inner-2 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.col-lg-3,
+.col-lg-4,
+.col-lg-6,
+.col-md-4,
+.col-md-6,
+.col-sm-6,
+.col-12 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 576px) {
+    .col-sm-6 {
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-md-4 {
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+
+    .col-md-6 {
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-lg-3 {
+        -ms-flex: 0 0 25%;
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+
+    .col-lg-4 {
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+
+    .col-lg-6 {
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/*
+    primary: #2D99CC
+    success: #319966
+    danger: #993332
+  */
+
+.btn {
+    display: inline-block;
+    font-size: 1rem;
+    width: auto;
+    padding: 12px 12px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 0;
+}
+
+.btn-default {
+    border: 1px solid #ccc;
+    background-color: transparent;
+    color: #626364;
+}
+
+.btn-default:hover,
+.btn-default:focus {
+    color: white;
+    background-color: #98999A;
+}
+
+.btn-primary {
+    background-color: #2D99CC;
+    color: white;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #1b6f96;
+}
+
+.btn-success {
+    background-color: #319966;
+    color: white;
+}
+
+.btn-success:hover,
+.btn-success:focus {
+    background-color: #1d6e46;
+}
+
+.btn-danger {
+    background-color: #993332;
+    color: white;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+    background-color: #752423;
+}
+
+.mb-45 {
+    margin-bottom: 45px;
+}
+
+.mb-p {
+    margin-bottom: 20px;
+}
+
+.text-success {
+    color: #319966;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Fonts */
+
+.font-ubuntu {
+    font-family: 'Ubuntu', sans-serif;
+}
