@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import AuthRoutes from './routes/AuthRoutes.js';
+import UserRoutes from './routes/UserRoutes.js';
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', AuthRoutes);
+app.use('/users', UserRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
