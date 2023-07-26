@@ -25,14 +25,21 @@ export const useAuthStore = defineStore("auth", () => {
         user.value = {};
         isAuthenticated.value = false;
         removeToken();
-        errors.value = {};
+        errors.value = "";
+        router.push("/login");
     }
 
     async function login(credentials) {
         try {
             const response = await ApiService.post("/auth/login", credentials);
             setAuth(response.data);
-            router.push("/");
+            
+            if (response.data.user.role === "ADMIN") {
+                router.push("/admin");
+            }
+            else {
+                router.push("/");
+            }
         } catch (error) {
             setError(error.response.data.error);
         }
@@ -50,14 +57,17 @@ export const useAuthStore = defineStore("auth", () => {
     function verifyAuth() {
         if (getToken()) {
             ApiService.setHeader();
-            ApiService.get("/user")
-                .then(({ data }) => {
-                    setAuth(data);
-                })
-                .catch((error) => {
-                    setError(error.response.data.errors);
-                    logout();
-                });
+            
+            if (Object.keys(user.value).length === 0) {
+                ApiService.get("/users/verifyUser")
+                    .then(response => {
+                        setAuth(response.data);
+                    })
+                    .catch(error => {
+                        setError(error.response.data.error);
+                        logout();
+                    });
+            }
         }
         else {
             logout();

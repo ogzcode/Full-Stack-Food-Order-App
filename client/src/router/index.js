@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../stores/auth';
+
+import { getToken } from '../services/tokenServices';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -39,6 +42,9 @@ const router = createRouter({
       path: "/admin",
       name: "Admin",
       component: () => import("@/views/admin/Admin.vue"),
+      meta: {
+        requiresAuth: true
+      },
       children: [
         {
           path: "",
@@ -71,5 +77,30 @@ const router = createRouter({
     }
   ]
 })
+
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  const token = getToken();
+
+  if (token && Object.keys(authStore.user).length === 0) {
+    authStore.verifyAuth();
+  }
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!token) {
+      next({
+        path: '/login',
+      });
+    }
+    else {
+      next();
+    }
+  }
+  else {
+    next();
+  }
+});
+
 
 export default router
