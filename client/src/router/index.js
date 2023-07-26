@@ -17,6 +17,16 @@ const router = createRouter({
       component: () => import("@/views/auth/Register.vue")
     },
     {
+      path: "/about",
+      name: "About",
+      component: () => import("@/components/about/About.vue")
+    },
+    {
+      path: "/contact",
+      name: "Contact",
+      component: () => import("@/components/contact/Contact.vue")
+    },
+    {
       path: "/",
       name: "User",
       component: () => import("@/views/user/User.vue"),
@@ -25,17 +35,7 @@ const router = createRouter({
           path: "/",
           name: "HomePage",
           component: () => import("@/views/user/home/Home.vue")
-        },
-        {
-          path: "about",
-          name: "About",
-          component: () => import("@/views/user/about/About.vue")
-        },
-        {
-          path: "contact",
-          name: "Contact",
-          component: () => import("@/views/user/contact/Contact.vue")
-        },
+        }
       ]
     },
     {
