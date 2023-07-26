@@ -86,7 +86,7 @@ watch(errors, (value) => {
     if (value) {
         setTimeout(() => {
             store.setError("");
-        }, 3000);
+        }, 2000);
     }
 });
 </script>

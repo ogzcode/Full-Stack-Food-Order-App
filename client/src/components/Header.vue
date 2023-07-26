@@ -1,9 +1,11 @@
 <template>
-    <div class="placeholder">
+    <div class="placeholder relative">
         <div class="parallax-window" :style="{ backgroundImage: `url(${backgroundImage})` }">
+            <SuccessAlert :message="successMessage" />
             <div class="absolute top-0 left-0 w-full p-4 text-right z-20">
                 <template v-if="!isAuthenticated">
-                    <button class="bg-rose-500 rounded-sm mx-2 px-4 py-1 text-sm text-white">
+                    <router-link :to="{ name: 'Register' }"
+                        class="bg-rose-500 rounded-sm mx-2 px-6 py-1 text-sm text-white inline-block border border-white tracking-wide hover:bg-rose-600">
                         <div class="flex">
                             <span class="mr-2">Sign In</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -14,8 +16,9 @@
                                     d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
                             </svg>
                         </div>
-                    </button>
-                    <button class="bg-rose-500 rounded-sm mx-2 px-4 py-1 text-sm text-white">
+                    </router-link>
+                    <router-link :to="{ name: 'Login' }"
+                        class="bg-rose-500 rounded-sm mx-2 px-6 py-1 text-sm text-white inline-block border border-white tracking-wide hover:bg-rose-600">
                         <div class="flex">
                             <span class="mr-2">Login</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -26,10 +29,11 @@
                                     d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
                             </svg>
                         </div>
-                    </button>
+                    </router-link>
                 </template>
                 <template v-else>
-                    <button class="bg-rose-500 rounded-sm mx-2 px-4 py-1 text-sm text-white">
+                    <button @click="logout"
+                        class="bg-rose-500 rounded-sm mx-2 px-4 py-1 text-sm text-white border border-white tracking-wide hover:bg-rose-600">
                         <div class="flex">
                             <span class="mr-2">Logout</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -64,8 +68,9 @@
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia"
 import { useRoute } from 'vue-router';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 
 import homeBg from '../assets/image/home-bg.jpg';
 import aboutBg from '../assets/image/about-bg.jpg';
@@ -73,13 +78,15 @@ import contactBg from '../assets/image/contact-bg.jpg';
 
 import { useAuthStore } from '../stores/auth.js';
 
+import SuccessAlert from './alert/SuccessAlert.vue';
+
 const store = useAuthStore();
 
-const { isAuthenticated } = store;
-console.log(isAuthenticated);
+const { isAuthenticated } = storeToRefs(store);
 
 const route = useRoute();
 const backgroundImage = ref(homeBg);
+const successMessage = ref(null);
 
 const routeList = [
     {
@@ -113,6 +120,18 @@ onMounted(() => {
 watch(route, (to) => {
     updateBackgroundImage();
 });
+
+const logout = () => {
+    store.logout();
+    successMessage.value = "Logout successfully";
+}
+
+watch(successMessage, () => {
+    setTimeout(() => {
+        successMessage.value = null;
+    }, 2000);
+}, { immediate: true });
+
 </script>
 
 <style scoped>
