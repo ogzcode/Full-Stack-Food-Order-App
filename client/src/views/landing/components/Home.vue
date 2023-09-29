@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-[700px] flex justify-around items-center px-40 bg-orange-950">
+    <div class="min-h-[700px] flex justify-around items-center px-40 bg-orange-950" id="home">
         <div class="flex-1">
             <h1 class="text-4xl w-1/2 font-bold tracking-wide text-white mb-4">Delicious Dishes for Food Lovers</h1>
             <p class="text-slate-50 w-3/4 font-light tracking-wide">
@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import homePage from "@/assets/home-page-remove.png";
+import homePage from "@/assets/images/other/home-page-remove.png";
 </script>
 
 <style scoped>

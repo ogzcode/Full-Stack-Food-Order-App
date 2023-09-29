@@ -1,5 +1,5 @@
 <template>
-    <div class="py-16">
+    <div class="py-20" id="services">
         <div class="flex flex-col items-center mb-16">
             <h1 class="font-bold text-3xl text-slate-800 mb-4 tracking-wide">Our Services</h1>
             <p class="w-1/3 text-center text-slate-800 tracking-wide font-light">

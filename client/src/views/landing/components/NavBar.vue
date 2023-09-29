@@ -3,10 +3,10 @@
         <div class="flex items-center gap-20">
             <h1 class="text-4xl font-bold tracking-wide text-slate-800">Food<span class="text-orange-600">-ER</span></h1>
             <nav>
-                <a class="mx-8 font-medium tracking-wide text-slate-800 hover:text-orange-600 transition" href="#">Home</a>
-                <a class="mx-8 font-medium tracking-wide text-slate-800 hover:text-orange-600 transition" href="#">Services</a>
-                <a class="mx-8 font-medium tracking-wide text-slate-800 hover:text-orange-600 transition" href="#">Menu</a>
-                <a class="mx-8 font-medium tracking-wide text-slate-800 hover:text-orange-600 transition" href="#">Contact</a>
+                <a class="mx-8 font-medium tracking-wide text-slate-800 hover:text-orange-600 transition" href="#home">Home</a>
+                <a class="mx-8 font-medium tracking-wide text-slate-800 hover:text-orange-600 transition" href="#services">Services</a>
+                <a class="mx-8 font-medium tracking-wide text-slate-800 hover:text-orange-600 transition" href="#menu">Menu</a>
+                <a class="mx-8 font-medium tracking-wide text-slate-800 hover:text-orange-600 transition" href="#contact">Contact</a>
             </nav>
         </div>
         <div>
