@@ -52,6 +52,48 @@ const router = createRouter({
           },
         },
       ]
+    },
+    {
+      path: "/user",
+      name: "User",
+      component: () => import("@/views/user/UserPage.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+      children: [
+        {
+          path: "",
+          name: "UserHome",
+          redirect: { name: "UserProducts"},
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: "products",
+          name: "UserProducts",
+          component: () => import("@/views/user/Products.vue"),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: "old-orders",
+          name: "OldOrders",
+          component: () => import("@/views/user/OldOrders.vue"),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: "settings",
+          name: "Settings",
+          component: () => import("@/views/user/UserSettings.vue"),
+          meta: {
+            requiresAuth: true,
+          },
+        }
+      ]
     }
   ]
 })
