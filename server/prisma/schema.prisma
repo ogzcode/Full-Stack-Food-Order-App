@@ -10,11 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String
-  password  String
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String
+  password   String
+  phone      String   @default("")
+  orderCount Int      @default(0)
+  role       String?  @default("user")
+  createdAt  DateTime @default(now())
 }
