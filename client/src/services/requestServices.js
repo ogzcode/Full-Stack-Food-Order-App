@@ -7,3 +7,7 @@ export const Login = async (loginData) => {
 export const Register = async (registerData) => {
     return await request.post('/auth/register', registerData);
 }
+
+export const CheckAuth = async () => {
+    return await request.get('/auth/checkAuth');
+}

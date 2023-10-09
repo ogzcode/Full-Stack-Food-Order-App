@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TokenManager from '../services/tokenServices'
-import { Login, Register } from '../services/requestServices'
+import { Login, Register, CheckAuth } from '../services/requestServices'
 
 export const useAuth = defineStore('auth', () => {
     const router = useRouter()
@@ -17,11 +17,34 @@ export const useAuth = defineStore('auth', () => {
     const login = ({ email, password }) => {
         Login({ email, password })
             .then((response) => {
-                console.log(response)
                 TokenManager.saveToken(response.data.token)
                 user.value = response.data.user
                 isAuthenticated.value = true
-                router.push({ name: 'AdminHome' })
+                
+                if (user.value.role === 'admin') {
+                    router.push({ name: 'AdminHome' })
+                }
+                else {
+                    router.push({ name: 'UserHome' })
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+                error.value = err.response?.data.error
+            })
+    }
+
+    const logout = () => {
+        TokenManager.destroyToken()
+        user.value = null
+        isAuthenticated.value = false
+        router.push({ name: 'Login' })
+    }
+
+    const signup = ({ email, password, fullName }) => {
+        Register({ email, password, name: fullName })
+            .then((response) => {
+                router.push({ name: 'Login' })
             })
             .catch((err) => {
                 console.log(err)
@@ -29,27 +52,24 @@ export const useAuth = defineStore('auth', () => {
             })
     }
 
-    const logout = () => {
-        TokenManager.removeToken()
-        user.value = null
-        isAuthenticated.value = false
-        router.push({ name: 'Login' })
-    }
-
-    const register = ({ email, password, fullName }) => {
-        Register({ email, password, fullName })
-            .then((response) => {
-                console.log(response)
-                router.push({ name: 'Login' })
-            })
-            .catch((err) => {
-                error.value = err.response.data.error
-            })
-    }
-
     const checkAuth = () => {
-        if (TokenManager.getToken() && !isAuthenticated.value) {
+        if (TokenManager.getToken() && (!isAuthenticated.value && !user.value)) {
+            console.log('checkAuth')
             isAuthenticated.value = true
+            CheckAuth()
+                .then((response) => {
+                    user.value = response.data.user
+                    if (user.value.role === 'admin') {
+                        router.push({ name: 'AdminHome' })
+                    }
+                    else {
+                        router.push({ name: 'UserHome' })
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                    error.value = err.response.data.error
+                })
         }
         else {
             isAuthenticated.value = false
@@ -63,7 +83,7 @@ export const useAuth = defineStore('auth', () => {
         checkAuth,
         login,
         logout,
-        register,
+        signup,
         clearError
     }
 })

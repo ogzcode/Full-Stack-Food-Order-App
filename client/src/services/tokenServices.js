@@ -3,17 +3,19 @@ class TokenManager {
         this.tokenKey = "food-order-key";
     }
 
-    static getToken() {
+    getToken() {
         return localStorage.getItem(this.tokenKey);
     }
 
-    static saveToken(token) {
+    saveToken(token) {
         localStorage.setItem(this.tokenKey, token);
     }
 
-    static destroyToken() {
+    destroyToken() {
         localStorage.removeItem(this.tokenKey);
     }
 }
 
-export default TokenManager;
+const tokenManager = new TokenManager();
+
+export default tokenManager;

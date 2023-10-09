@@ -3,7 +3,6 @@ import TokenManager from './tokenServices';
 
 export const request = axios.create({
     baseURL: 'http://localhost:3000',
-    timeout: 1000,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -28,7 +27,8 @@ export const setupInterceptors = () => {
             return response;
         },
         (error) => {
-            if (error.response.status === 401) {
+            console.log(error)
+            if (error.code === 'ECONNABORTED') {
                 TokenManager.destroyToken();
             }
             return Promise.reject(error);

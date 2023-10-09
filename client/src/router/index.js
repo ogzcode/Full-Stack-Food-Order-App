@@ -23,7 +23,7 @@ const router = createRouter({
         {
           path: "",
           name: "AdminHome",
-          redirect: { name: "Orders"},
+          redirect: { name: "Orders" },
           meta: {
             requiresAuth: true,
           },
@@ -65,7 +65,7 @@ const router = createRouter({
         {
           path: "",
           name: "UserHome",
-          redirect: { name: "UserProducts"},
+          redirect: { name: "UserProducts" },
           meta: {
             requiresAuth: true,
           },
@@ -122,8 +122,19 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/login'
       })
-    } else {
-      next()
+    }
+    else {
+      if (authStore.user?.role !== 'admin' && to.name === 'AdminHome') {
+        next({
+          name: 'UserHome'
+        });
+      } else if (authStore.user?.role === 'admin' && to.name === 'UserHome') {
+        next({
+          name: 'AdminHome'
+        });
+      } else {
+        next();
+      }
     }
   } else {
     next()
