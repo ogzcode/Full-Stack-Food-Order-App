@@ -1,16 +1,26 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from './prismaConfig.js';
 import bcrypt from 'bcrypt';
 
-const prisma = new PrismaClient()
-
 export default class User {
-    static async createUser({ email, name, password }) {
-        const hashPassword = await bcrypt.hash(password, 10)
+    static async createUser({ email, name, password, role = 'user' }) {
+        const user = await prisma.user.findUnique({
+            where: {
+                email
+            },
+        })
+
+        if (user) {
+            throw new Error('Email already exists.')
+        }
+
+        const hashPassword = await bcrypt.hash(password, 10);
+        
         return await prisma.user.create({
             data: {
                 email,
                 name,
                 password: hashPassword,
+                role,
             },
         })
     }
@@ -37,5 +47,17 @@ export default class User {
         }
 
         return user
+    }
+    
+    static async deleteAllUsers() {
+        return await prisma.user.deleteMany()
+    } 
+
+    static async findUserById(id) {
+        return await prisma.user.findUnique({
+            where: {
+                id
+            },
+        })
     }
 }   
