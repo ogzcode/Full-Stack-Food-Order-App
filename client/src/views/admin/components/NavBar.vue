@@ -9,18 +9,19 @@
                 <router-link :to="{ name: 'Products' }"
                     class="mx-8 font-medium tracking-wide hover:text-orange-600 transition"
                     :class="[isRouteActive('Products')]">Products</router-link>
-                <router-link :to="{ name: 'Users' }"
-                    class="mx-8 font-medium tracking-wide hover:text-orange-600 transition"
+                <router-link :to="{ name: 'Users' }" class="mx-8 font-medium tracking-wide hover:text-orange-600 transition"
                     :class="[isRouteActive('Users')]">Users</router-link>
             </nav>
         </div>
         <div class="flex items-center">
-            <div class="border border-orange-600 text-orange-600 font-medium text-xs px-4 py-2 rounded-full tracking-wide relative">
+            <div
+                class="border border-orange-600 text-orange-600 font-medium text-xs px-4 py-2 rounded-full tracking-wide relative">
                 Orders
-                <span class="absolute -top-2 -right-2 text-white bg-orange-600 rounded-full flex justify-center items-center text-xs w-6 h-6 ">2</span>
+                <span
+                    class="absolute -top-2 -right-2 text-white bg-orange-600 rounded-full flex justify-center items-center text-xs w-6 h-6 ">2</span>
             </div>
-            <a class="font-medium text-sm tracking-wide mx-8 px-6 py-2 rounded border border-red-600 text-red-600 flex items-center logout-btn"
-                href="#">
+            <button @click="logout"
+                class="font-medium text-sm tracking-wide mx-8 px-6 py-2 rounded border border-red-600 text-red-600 flex items-center logout-btn">
                 <span>Logout</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                     class="bi bi-box-arrow-right relative left-2" viewBox="0 0 16 16">
@@ -28,18 +29,24 @@
                         d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
                     <path fill-rule="evenodd"
                         d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
-                </svg></a>
+                </svg></button>
         </div>
     </header>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router';
+import { useAuth } from "../../../stores/auth";
 
 const $route = useRoute();
+const authStore = useAuth();
 
 const isRouteActive = (routeName) => {
     return routeName === $route.name ? "text-orange-600" : "text-slate-800";
+}
+
+const logout = () => {
+    authStore.logout();
 }
 
 </script>

@@ -64,7 +64,7 @@ const handleSubmit = (e) => {
 watch(() => authStore.error, (value) => {
     if (value) {
         toastStore.showToast('error', value);
-        authStore.resetError();
+        authStore.clearError();
     }
 });
 
