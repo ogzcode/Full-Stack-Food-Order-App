@@ -10,15 +10,15 @@
             </button>
         </div>
         <div class="p-4">
-            <img :src="image1" class="" />
+            <img :src="getImgURL" class="" />
         </div>
         <div class="px-8 py-4 flex justify-between items-center">
             <div>
-                <p class="text-slate-800 font-semibold text-xl">Name</p>
-                <p class="text-slate-500 font-light text-sm mt-1">Description</p>
+                <p class="text-slate-800 font-semibold text-xl">{{ props.name }}</p>
+                <p class="text-slate-500 font-light text-sm mt-1">{{ props.description }}</p>
             </div>
             <div>
-                <p class="font-bold text-orange-600 text-xl text-right">$24.25</p>
+                <p class="font-bold text-orange-600 text-xl text-right">${{ props.price }}</p>
                 <div class="flex items-center gap-1 mt-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-star-fill text-orange-500" viewBox="0 0 16 16">
@@ -70,12 +70,30 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import image1 from "../../../assets/images/landing/image-1.png";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 
 const showAction = ref(false);
 const menuRef = ref(null);
 const menuBtnRef = ref(null);
+
+const props = defineProps({
+    image: {
+        type: String
+    },
+    name: {
+        type: String
+    },
+    description: {
+        type: String
+    },
+    price: {
+        type: String
+    }
+});
+
+const getImgURL = computed(() => {
+    return "http://localhost:3000/public/docs/" + props.image;
+});
 
 const toggleAction = () => {
     showAction.value = !showAction.value;

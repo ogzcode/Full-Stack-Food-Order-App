@@ -20,3 +20,7 @@ export const getAllUsers = async () => {
 export const deleteUserById = async (id) => {
     return await request.delete(`/user/deleteUser/${id}`);
 }
+
+export const getAllProducts = async () => {
+    return await request.get('/product/all');
+}

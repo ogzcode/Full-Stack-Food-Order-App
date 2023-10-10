@@ -18,16 +18,9 @@
             </div>
         </div>
         <div class="pt-12 flex gap-12 flex-wrap justify-around">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            <template v-for="(product, i) in productStore.products" :key="i">
+                <ProductCard :price="product.price" :name="product.name" :description="product.description" :image="product.image"/>
+            </template>
         </div>
     </div>
     <Dialog headerTitle="Add Product" :show="showAddProductDialog" @close="handleChangeAddDialog" submit-text="Create">
@@ -62,10 +55,15 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
+import { getAllProducts } from "../../services/requestServices.js";
+import { useProductStore } from '../../stores/product';
 import Dialog from '../../components/Dialog.vue';
 import ProductCard from './components/ProductCard.vue';
 
 import { ref } from 'vue';
+
+const productStore = useProductStore();
 
 const showAddProductDialog = ref(false);
 const name = ref('');
@@ -80,6 +78,12 @@ const handleChangeAddDialog = (value) => {
 const handleFileChange = (e) => {
     console.log(e.target.files[0])
 }
+
+onMounted(() => {
+    getAllProducts().then((res) => {
+        productStore.setProducts(res.data.products);
+    });
+});
 
 </script>
 
