@@ -26,7 +26,20 @@ export default class User {
     }
 
     static async getAllUsers() {
-        return await prisma.user.findMany()
+        return await prisma.user.findMany({
+            where: {
+                role: 'user'
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                orderCount: true,
+                createdAt: true,
+                phone: true,
+            }
+        })
     }
 
     static async findUserByEmailAndPassword({ email, password }) {
@@ -52,6 +65,14 @@ export default class User {
     static async deleteAllUsers() {
         return await prisma.user.deleteMany()
     } 
+
+    static async deleteUserById(id) {
+        return await prisma.user.delete({
+            where: {
+                id
+            },
+        })
+    }
 
     static async findUserById(id) {
         return await prisma.user.findUnique({

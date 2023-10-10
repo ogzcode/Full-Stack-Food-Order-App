@@ -12,3 +12,18 @@ export const getOrderStatusStyle = (status) => {
             return 'bg-yellow-100 text-yellow-800';
     }
 }
+
+export const formatDateAndGetData = (data) => {
+    console.log(data);
+    const copyData = [...data];
+
+    copyData.forEach((item) => {
+        const date = new Date(item.createdAt);
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        item.createdAt = `${day}-${month}-${year}`;
+    });
+
+    return copyData;
+}

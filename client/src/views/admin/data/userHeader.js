@@ -23,7 +23,7 @@ export const userHeader = [
     },
     {
         columnName: "Created At",
-        key: "createTime",
+        key: "createdAt",
         width: "120px", 
         sortEnabled: true,
     },
