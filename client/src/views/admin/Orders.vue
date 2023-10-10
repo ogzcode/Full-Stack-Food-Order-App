@@ -73,7 +73,7 @@
             </template>
         </Dialog>
         <Dialog header-title="Order Details" :show="orderDetailsDialog" @close="handleOrderDialog"
-            submit-is-disabled="true">
+            :submit-is-disabled="true">
             <template v-slot:body>
                 <div class="max-h-[400px] overflow-y-auto order-scroll pr-2">
                     <div class="border border-orange-500 rounded flex justify-between items-center mb-4">
