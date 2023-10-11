@@ -54,7 +54,6 @@ export const useAuth = defineStore('auth', () => {
 
     const checkAuth = () => {
         if (TokenManager.getToken() && (!isAuthenticated.value && !user.value)) {
-            console.log('checkAuth')
             isAuthenticated.value = true
             CheckAuth()
                 .then((response) => {

@@ -3,9 +3,8 @@
         <div class="flex justify-between items-center">
             <h1 class="text-3xl text-slate-700 font-bold tracking-wide">Products</h1>
             <div class="flex gap-x-4 items-center">
-                <input type="text"
-                    class="border border-slate-200 rounded w-[240px] p-2 outline-0 text-slate-800 text-sm"
-                    placeholder="Search Products..." />
+                <input type="text" class="border border-slate-200 rounded w-[240px] p-2 outline-0 text-slate-800 text-sm"
+                    placeholder="Search Products..." v-model="searchQuery" />
                 <button class="flex items-center bg-sky-500 text-white px-4 py-2 text-sm rounded"
                     @click="handleChangeAddDialog(true)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -18,14 +17,16 @@
             </div>
         </div>
         <div class="pt-12 flex gap-12 flex-wrap justify-around">
-            <template v-for="(product, i) in productStore.products" :key="i">
-                <ProductCard :price="product.price" :name="product.name" :description="product.description" :image="product.image"/>
+            <template v-for="(product, i) in productStore.searchProduct(searchQuery)" :key="i">
+                <ProductCard :price="product.price" :name="product.name" :description="product.description"
+                    :image="product.image" @delete="handleDelete(product.id)" @update="handleUpdate(product)"/>
             </template>
         </div>
     </div>
-    <Dialog headerTitle="Add Product" :show="showAddProductDialog" @close="handleChangeAddDialog" submit-text="Create">
+    <Dialog headerTitle="Add Product" :show="showAddProductDialog" @close="handleChangeAddDialog" submit-text="Create"
+        :submit-is-disabled="isDisabled" :on-submit="handleSubmit">
         <template v-slot:body>
-            <form>
+            <form @submit.prevent="handleSubmit" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label class="text-xs text-slate-500">Product Name</label>
                     <input type="text" class="border border-slate-200 rounded w-full p-2 outline-0 text-slate-800"
@@ -44,39 +45,90 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="block mb-2 text-xs text-slate-500">Upload
-                        file</label>
-                    <input class="border border-slate-200 rounded w-full p-2 outline-0 text-slate-800" type="file">
+                    <label class="block mb-2 text-xs text-slate-500">Upload file</label>
+                    <input class="border border-slate-200 rounded w-full p-2 outline-0 text-slate-800" type="file"
+                        name="image" @change="handleFileChange">
                 </div>
-
             </form>
         </template>
     </Dialog>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { getAllProducts } from "../../services/requestServices.js";
+import { onMounted, computed } from 'vue';
+import { getAllProducts, createAndUpdateProduct, deleteProductById } from "../../services/requestServices.js";
 import { useProductStore } from '../../stores/product';
-import Dialog from '../../components/Dialog.vue';
+import { useToastStore } from "../../stores/toast";
 import ProductCard from './components/ProductCard.vue';
+import Dialog from '../../components/Dialog.vue';
 
 import { ref } from 'vue';
 
+const toastStore = useToastStore();
 const productStore = useProductStore();
 
 const showAddProductDialog = ref(false);
 const name = ref('');
 const description = ref('');
 const price = ref(0);
+const file = ref(null);
+const selectedId = ref(null);
+const searchQuery = ref('');
 
 
 const handleChangeAddDialog = (value) => {
     showAddProductDialog.value = value
+
+    if (!value) {
+        selectedId.value = null;
+        name.value = '';
+        description.value = '';
+        price.value = 0;
+        file.value = null;
+    }
 }
 
 const handleFileChange = (e) => {
-    console.log(e.target.files[0])
+    file.value = e.target.files[0]
+}
+
+const handleDelete = (id) => {
+    deleteProductById(id)
+        .then((res) => {
+            productStore.deleteProduct(id);
+            toastStore.showToast("success", res.data.message);
+        });
+}
+
+const handleUpdate = (product) => {
+    selectedId.value = product.id;
+    name.value = product.name;
+    description.value = product.description;
+    price.value = product.price;
+    file.value = product.image;
+    handleChangeAddDialog(true);
+}
+
+const handleSubmit = () => {
+    const formData = new FormData();
+
+    formData.append('id', selectedId.value);
+    formData.append('name', name.value);
+    formData.append('description', description.value);
+    formData.append('price', price.value);
+    formData.append('image', file.value);
+
+    createAndUpdateProduct(formData)
+        .then((res) => {
+            if (selectedId.value) {
+                productStore.updateProduct(res.data.product);
+            } else {
+                productStore.addProduct(res.data.product);
+            }
+            toastStore.showToast("success", res.data.message);
+        });
+
+    handleChangeAddDialog(false);
 }
 
 onMounted(() => {
@@ -85,6 +137,9 @@ onMounted(() => {
     });
 });
 
+const isDisabled = computed(() => {
+    return name.value === '' || description.value === '' || price.value === 0 || file.value === null;
+})
 </script>
 
 <style scoped>

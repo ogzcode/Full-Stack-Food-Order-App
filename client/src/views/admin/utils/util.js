@@ -14,7 +14,6 @@ export const getOrderStatusStyle = (status) => {
 }
 
 export const formatDateAndGetData = (data) => {
-    console.log(data);
     const copyData = [...data];
 
     copyData.forEach((item) => {
