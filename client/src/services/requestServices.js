@@ -36,3 +36,7 @@ export const createAndUpdateProduct = async (productData) => {
 export const deleteProductById = async (id) => {
     return await request.delete(`/product/delete/${id}`);
 }
+
+export const deleteAccount = async (password) => {
+    return await request.delete(`/user/deleteAccount/${password}`);
+}

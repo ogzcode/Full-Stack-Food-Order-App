@@ -36,27 +36,14 @@
                         Profile</button>
                 </div>
             </form>
-
-            <h1 class="text-slate-800 text-2xl font-medium tracking-wide mb-2 mt-12">Delete Account</h1>
-            <p class="text-slate-600 font-light text-sm mb-4">
-                Are you sure you want to delete your account?
-                This action cannot be undone.
-                All your data, including profile information, posts,
-                and comments, will be permanently deleted.
-                Please be certain before proceeding.
-                If you still wish to proceed, enter your password to confirm:
-            </p>
-            <div class="mb-4">
-                <label class="text-xs text-slate-500">Password</label>
-                <input type="password" class="border border-slate-200 rounded w-full p-2 outline-0 text-slate-800" />
-            </div>
-            <button class="text-sm tracking-wide font-medium px-6 py-2 text-red-500 border border-red-500 rounded transition hover:bg-red-500 hover:text-white">Delete Account</button>
+            <DeleteAccount />
         </div>
+
     </div>
 </template>
 
 <script setup>
-
+import DeleteAccount from './components/DeleteAccount.vue';
 </script>
 
 <style scoped></style>

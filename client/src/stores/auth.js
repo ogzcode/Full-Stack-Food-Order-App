@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TokenManager from '../services/tokenServices'
-import { Login, Register, CheckAuth } from '../services/requestServices'
+import { Login, Register, CheckAuth, deleteAccount } from '../services/requestServices'
 
 export const useAuth = defineStore('auth', () => {
     const router = useRouter()
@@ -75,6 +75,18 @@ export const useAuth = defineStore('auth', () => {
         }
     }
 
+    const deleteAccountByUser = (password) => {
+        deleteAccount(password)
+            .then((response) => {
+                console.log(response)
+                logout()
+            })
+            .catch((err) => {
+                console.log(err)
+                error.value = err.response.data.error
+            })
+    }
+
     return {
         user,
         isAuthenticated,
@@ -83,6 +95,7 @@ export const useAuth = defineStore('auth', () => {
         login,
         logout,
         signup,
-        clearError
+        clearError,
+        deleteAccountByUser
     }
 })

@@ -43,3 +43,24 @@ export const deleteUserById = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 }
+
+export const deleteAccount = async (req, res) => {
+    const userDetails = req.user;
+    const { password } = req.params;
+
+    try {
+
+        const user = await User.findUserByEmailAndPassword({ email: userDetails.email, password: password });
+
+        if (!user) {
+            return res.status(401).json({ error: "Invalid password." });
+        }
+
+        await User.deleteUserById(userDetails.id);
+        res.status(200).json({ message: "Account deleted successfully." });
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ error: error.message });
+    }
+}
