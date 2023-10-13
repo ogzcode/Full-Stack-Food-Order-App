@@ -42,7 +42,7 @@ export default class User {
         })
     }
 
-    static async findUserByEmailAndPassword({ email, password }) {
+    static async findUserByEmailAndPassword(email, password) {
         const user =  await prisma.user.findUnique({
             where: {
                 email
@@ -79,6 +79,54 @@ export default class User {
             where: {
                 id
             },
+        })
+    }
+
+    static async checkPassword(id, password) {
+        const user = await prisma.user.findUnique({
+            where: {
+                id
+            },
+        })
+
+        if (!user) {
+            throw new Error('User not found.')
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+        if (!isPasswordValid) {
+            throw new Error('Invalid password.')
+        }
+    }
+
+    static async updateUserById(id, name, email, newPassword, phone, address) {
+        const updateData = {
+            name,
+            email,
+            phone,
+            address,
+        }
+
+        if (newPassword) {
+            const hashPassword = await bcrypt.hash(newPassword, 10);
+            updateData.password = hashPassword
+        }
+
+        return await prisma.user.update({
+            where: {
+                id
+            },
+            data: updateData,
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                orderCount: true,
+                createdAt: true,
+                phone: true,
+                address: true,
+            }
         })
     }
 }   

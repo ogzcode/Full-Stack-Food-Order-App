@@ -10,8 +10,8 @@ export const register = async (req, res) => {
         else {
             const user = await User.createUser({ email, name, password });
         }
-            
-        res.status(201).json({ message: 'User created successfully.'})
+
+        res.status(201).json({ message: 'User created successfully.' })
     } catch (error) {
         console.log(error)
         res.status(400).json({ error: error.message })
@@ -21,18 +21,21 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     const { email, password } = req.body
     try {
-        const user = await User.findUserByEmailAndPassword({ email, password })
+        const user = await User.findUserByEmailAndPassword(email, password)
         const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
             expiresIn: '1h',
         })
 
-        res.status(200).json({ 
+        res.status(200).json({
             token,
             user: {
                 id: user.id,
                 email: user.email,
                 name: user.name,
-                role: user.role
+                role: user.role,
+                address: user.address,
+                phone: user.phone,
+                orderCount: user.orderCount
             }
         })
     } catch (error) {
@@ -45,12 +48,15 @@ export const checkAuth = async (req, res) => {
     const token = req.user
     try {
         const user = await User.findUserById(token.id)
-        res.status(200).json({ 
+        res.status(200).json({
             user: {
                 id: user.id,
                 email: user.email,
                 name: user.name,
-                role: user.role
+                role: user.role,
+                address: user.address,
+                phone: user.phone,
+                orderCount: user.orderCount
             }
         })
     } catch (error) {

@@ -50,7 +50,7 @@ export const deleteAccount = async (req, res) => {
 
     try {
 
-        const user = await User.findUserByEmailAndPassword({ email: userDetails.email, password: password });
+        const user = await User.chekcPassword(userDetails.id, password);
 
         if (!user) {
             return res.status(401).json({ error: "Invalid password." });
@@ -61,6 +61,19 @@ export const deleteAccount = async (req, res) => {
 
     } catch (error) {
         console.log(error)
+        res.status(400).json({ error: error.message });
+    }
+}
+
+export const updateUser = async (req, res) => {
+    const { name, email, oldPassword, newPassword, phone, address } = req.body;
+    try {
+        const user = await User.checkPassword(req.user.id, oldPassword);
+        const updatedUser = await User.updateUserById(req.user.id, name, email, newPassword, phone, address);
+
+        res.status(200).json({ message: "User updated successfully.", user: updatedUser });
+    }
+    catch (error) {
         res.status(400).json({ error: error.message });
     }
 }

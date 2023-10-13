@@ -18,6 +18,7 @@ model User {
   phone      String   @default("")
   orderCount Int      @default(0)
   role       String?  @default("user")
+  address    String   @default("")
   createdAt  DateTime @default(now())
 }
 
