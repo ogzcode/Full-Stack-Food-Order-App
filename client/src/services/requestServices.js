@@ -40,3 +40,7 @@ export const deleteProductById = async (id) => {
 export const deleteAccount = async (password) => {
     return await request.delete(`/user/deleteAccount/${password}`);
 }
+
+export const updateUser = async (userData) => {
+    return await request.patch('/user/updateUser', userData);
+}
