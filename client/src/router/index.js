@@ -111,6 +111,14 @@ const router = createRouter({
       meta: {
         requiresAuth: false,
       },
+    },
+    {
+      path: "/error",
+      name: "Error",
+      component: () => import("@/views/auth/Error.vue"),
+      meta: {
+        requiresAuth: false,
+      },
     }
   ]
 })

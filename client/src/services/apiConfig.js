@@ -29,6 +29,7 @@ export const setupInterceptors = () => {
         (error) => {
             console.log(error)
             if (error.code === 'ECONNABORTED' || error.response.status >= 400) {
+                window.location.href = '/error';
                 TokenManager.destroyToken();
             }
             return Promise.reject(error);
