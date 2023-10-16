@@ -103,14 +103,6 @@
 </template>
 
 <script setup>
-/*
-DataTable da görünecek veriler:
-    phone: "123456789",
-    address: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-    createTime: "2021-08-20 12:00",
-    total: "$24.90",
-    status: "Completed"
-*/
 import { onMounted, ref, watch } from "vue";
 import { useDataTable } from "../../stores/useDataTable";
 import DataTable from "../../components/datatable/DataTable.vue"

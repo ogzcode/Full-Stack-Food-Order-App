@@ -15,14 +15,15 @@
             </nav>
         </div>
         <div class="flex items-center gap-x-4">
-            <div
+            <button
+                @click="handleOpen"
                 class="ring-animation bg-orange-600 border border-orange-600 text-white px-3 py-3 rounded-full cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                     class="bi bi-basket3-fill" viewBox="0 0 16 16">
                     <path
                         d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z" />
                 </svg>
-            </div>
+            </button>
             <div class="border border-slate-400 text-slate-600 px-3 py-3 rounded-full cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-gear-fill"
                     viewBox="0 0 16 16">
@@ -53,8 +54,14 @@ const isRouteActive = (routeName) => {
     return routeName === $route.name ? "text-orange-600" : "text-slate-800";
 }
 
+const emits = defineEmits(['openDialog']);
+
 const logout = () => {
     authStore.logout();
+}
+
+const handleOpen = () => {
+    emits('openDialog', true);
 }
 
 </script>
@@ -81,4 +88,5 @@ const logout = () => {
     100% {
         box-shadow: 0 0 0 0 rgba(255, 165, 0, 0);
     }
-}</style>
+}
+</style>
