@@ -129,4 +129,15 @@ export default class User {
             }
         })
     }
+
+    static setOrderCount(id, count) {
+        return prisma.user.update({
+            where: {
+                id
+            },
+            data: {
+                orderCount: count
+            }
+        })
+    }
 }   

@@ -19,6 +19,7 @@ model User {
   orderCount Int      @default(0)
   role       String?  @default("user")
   address    String   @default("")
+  orders     Order[]
   createdAt  DateTime @default(now())
 }
 
@@ -29,4 +30,15 @@ model Product {
   price       String
   image       String
   createdAt   DateTime @default(now())
+  orders      Order[]
+}
+
+model Order {
+  id       Int      @id @default(autoincrement())
+  orderNo String   @unique @default(uuid())
+  userId   Int
+  user     User     @relation(fields: [userId], references: [id])
+  totalPrice String
+  products    Product[]
+  createdAt DateTime @default(now())
 }

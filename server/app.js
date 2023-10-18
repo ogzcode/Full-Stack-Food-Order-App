@@ -6,6 +6,7 @@ import { dirname } from 'path';
 import AuthRoute from './routes/AuthRoute.js';
 import UserRoute from './routes/UserRoute.js';
 import ProductRoute from './routes/ProductRoute.js';
+import OrderRoute from './routes/OrderRoute.js';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get('/test', (req, res) => {
 app.use('/auth', AuthRoute);
 app.use('/user', UserRoute);
 app.use('/product', ProductRoute);
+app.use('/order', OrderRoute);
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000');

@@ -17,6 +17,14 @@ class Product {
         return await prisma.product.findMany();
     }
 
+    static async getProductById(id) {
+        return await prisma.product.findUnique({
+            where: {
+                id: parseInt(id),
+            },
+        });
+    }
+
     static async deleteProduct(id) {
         const product = await prisma.product.findUnique({
             where: {
