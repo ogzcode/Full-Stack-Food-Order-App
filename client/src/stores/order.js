@@ -50,6 +50,16 @@ export const useOrderStore = defineStore("order", () => {
         return index !== -1;
     };
 
+    const getTotalPrice = () => {
+        let totalPrice = 0;
+
+        for (let order of orders.value) {
+            totalPrice += order.price * order.quantity;
+        }
+
+        return totalPrice;
+    };
+
     return {
         orders,
         setOrders,
@@ -59,5 +69,6 @@ export const useOrderStore = defineStore("order", () => {
         updateOrder,
         productIsHere,
         getProductById,
+        getTotalPrice,
     };
 });

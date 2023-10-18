@@ -10,7 +10,7 @@
                 </svg>
             </button>
             <template v-if="props.productIsHere">
-                <span class="px-2">{{ orderQuantity }}</span>
+                <span class="px-2 text-slate-600">{{ orderQuantity }}</span>
                 <button @click="handleDelete" class=" rounded-full p-2"
                     :class="[props.productIsHere ? 'bg-red-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg"
@@ -63,9 +63,8 @@
 </template>
 
 <script setup>
-import { watch, ref } from 'vue';
-
-const orderQuantity = ref(0);
+import { ref, watch } from 'vue';
+const orderQuantity = ref(0)
 
 const props = defineProps({
     product: {
@@ -76,6 +75,12 @@ const props = defineProps({
         default: false
     }
 });
+
+watch(() => props.productIsHere, (value) => {
+    if (!value) {
+        orderQuantity.value = 0;
+    }
+})
 
 const emits = defineEmits(['addProduct', "deleteProduct"]);
 
