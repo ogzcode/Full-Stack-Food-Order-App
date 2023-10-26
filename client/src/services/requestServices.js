@@ -48,3 +48,7 @@ export const updateUser = async (userData) => {
 export const createOrder = async (orderData) => {
     return await request.post('/order/createOrder', orderData);
 }
+
+export const getOrders = async () => {
+    return await request.get('/order/getOrders');
+}

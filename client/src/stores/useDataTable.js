@@ -125,7 +125,7 @@ export const useDataTable = defineStore("data-table", () => {
     }
 
     const filterByStatus = (status) => {
-        if (status === 'All') {
+        if (status === 'all') {
             initData.value = realData.value;
         }
         else {
