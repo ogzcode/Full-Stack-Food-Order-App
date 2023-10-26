@@ -1,36 +1,20 @@
 export const orderHeader = [
     {
         columnName: "Order No",
-        key: "no",
-        width: "80px",
+        key: "orderNo",
+        width: "240px",
         sortEnabled: true,
-    },
-    {
-        columnName: "Name",
-        key: "name",
-        width: "120px",
-        sortEnabled: true,
-    },
-    {
-        columnName: "Phone",
-        key: "phone",
-        width: "120px",
-    },
-    {
-        columnName: "Address",
-        key: "address",
-        width: "160px",
     },
     {
         columnName: "Date",
-        key: "createTime",
+        key: "createdAt",
         width: "120px", 
         sortEnabled: true,
     },
     {
-        columnName: "Price",
-        key: "total",
-        width: "60px",
+        columnName: "Total Price",
+        key: "totalPrice",
+        width: "90px",
     },
     {
         columnName: "Status",

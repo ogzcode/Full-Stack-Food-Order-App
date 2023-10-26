@@ -5,28 +5,19 @@
                 <Select v-model="selectedStatus" :options="selectedOption" />
             </template>
 
-            <template v-slot:no="{ data }">
-                {{ data.no }}
+            <template v-slot:order-no="{ data }">
+                {{ data.orderNo }}
             </template>
-            <template v-slot:name="{ data }">
-                {{ data.name }}
+            <template v-slot:created-at="{ data }">
+                {{ data.createdAt }}
             </template>
-            <template v-slot:phone="{ data }">
-                {{ data.phone }}
-            </template>
-            <template v-slot:address="{ data }">
-                {{ data.address }}
-            </template>
-            <template v-slot:create-time="{ data }">
-                {{ data.createTime }}
-            </template>
-            <template v-slot:total="{ data }">
-                {{ data.total }}
+            <template v-slot:total-price="{ data }">
+                {{ data.totalPrice }}
             </template>
             <template v-slot:status="{ data }">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium tracking-wide"
                     :class="[getOrderStatusStyle(data.status)]">
-                    {{ data.status }}
+                    {{ getUpdedatedStatus(data.status) }}
                 </span>
             </template>
             <template v-slot:actions="{ data }">
@@ -39,6 +30,16 @@
                             d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                     </svg>
                 </button>
+                <template v-if="data.status === 'pending'">
+                    <button
+                        class="border border-red-500 rounded-full w-10 h-10 inline-flex justify-center items-center text-red-500 mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path
+                                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                        </svg>
+                    </button>
+                </template>
             </template>
         </DataTable>
 
@@ -107,25 +108,22 @@ import { onMounted, ref, watch } from "vue";
 import { useDataTable } from "../../stores/useDataTable";
 import DataTable from "../../components/datatable/DataTable.vue"
 import Dialog from "../../components/Dialog.vue"
-import { orders } from "../admin/data/orders"
 import { orderHeader } from "../admin/data/orderHeader"
 import Select from "../../components/Select.vue";
 import image1 from "../../assets/images/landing/image-1.png";
 import { getOrderStatusStyle } from "../admin/utils/util.js";
+import { getOrders } from "../../services/requestServices";
+import { useToastStore } from "../../stores/toast";
+import { formatDateAndGetData } from "../admin/utils/util.js"
+import { selectedOption } from "./utils/util";
+import { getUpdedatedStatus } from "./utils/util";
 
 const dataTableStore = useDataTable();
+const toastStore = useToastStore();
 
 const deleteDialog = ref(false);
-const selectedStatus = ref('All');
+const selectedStatus = ref('all');
 const orderDetailsDialog = ref(false);
-const completeDialog = ref(false);
-
-const selectedOption = [
-    { label: 'All', value: 'All' },
-    { label: 'Completed', value: 'Completed' },
-    { label: 'Pending', value: 'Pending' },
-    { label: 'Canceled', value: 'Canceled' }
-]
 
 const handleChangeDeleteDialaog = (value) => {
     deleteDialog.value = value;
@@ -135,13 +133,15 @@ const handleOrderDialog = (value) => {
     orderDetailsDialog.value = value;
 }
 
-const handleCompleteDialog = (value) => {
-    completeDialog.value = value;
-}
-
 
 onMounted(() => {
-    dataTableStore.init(orders, orderHeader);
+    getOrders()
+        .then((res) => {
+            dataTableStore.init(formatDateAndGetData(res.data.orders), orderHeader);
+        })
+        .catch((err) => {
+            toastStore.addToast("error", err.message);
+        });
 })
 
 watch(selectedStatus, (value) => {
@@ -162,8 +162,7 @@ watch(selectedStatus, (value) => {
     background: #f97316;
     border-radius: 12px;
 }
+
 .order-scroll::-webkit-scrollbar-track {
     border-radius: 10px;
-}
-
-</style>
+}</style>
