@@ -2,8 +2,9 @@
     <div>
         <NavBar @open-dialog="handleDialog" />
         <RouterView />
-        <Dialog header-title="Order Details" :show="orderDialog" @close="handleDialog" :submit-is-disabled="!(orderStore.orders.length > 0)"
-            submit-text="Order" submit-type="success" :on-submit="handleSubmitOrder">
+        <Dialog header-title="Order Details" :show="orderDialog" @close="handleDialog"
+            :submit-is-disabled="!(orderStore.orders.length > 0)" submit-text="Order" submit-type="success"
+            :on-submit="handleSubmitOrder">
             <template v-slot:body>
                 <div class="max-h-[400px] overflow-y-auto order-scroll pr-2">
                     <template v-if="orderStore.orders.length > 0">
@@ -16,11 +17,13 @@
                                     <p class="text-slate-600 font-medium text-xs">X {{ product.quantity }}</p>
                                 </div>
                             </div>
-                            <p class="text-orange-500 text-xl font-medium mr-4">${{ parseInt(product.price) * product.quantity }}</p>
+                            <p class="text-orange-500 text-xl font-medium mr-4">${{ parseInt(product.price) *
+                                product.quantity }}</p>
                         </div>
                     </template>
                     <template v-else>
-                        <div class="flex w-full items-center bg-orange-50 border border-orange-200 p-2 text-orange-800 rounded">
+                        <div
+                            class="flex w-full items-center bg-orange-50 border border-orange-200 p-2 text-orange-800 rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                 class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
                                 <path
@@ -30,7 +33,14 @@
                         </div>
                     </template>
                 </div>
-                <p class="text-right mr-2 bg-orange-500 text-white text-lg font-medium p-2 rounded tracking-wide">Total: ${{  orderStore.getTotalPrice() }}</p>
+                <template v-if="orderStore.orders.length > 0">
+                    <div class="flex justify-between items-center bg-slate-100 rounded p-2 mr-2">
+                        <router-link :to="{ name: 'Settings' }"
+                            class="underline text-xs text-orange-600 tracking-wide">Update contact information</router-link>
+                        <p class="text-right text-lg font-medium rounded tracking-wide text-orange-600">Total: ${{
+                            orderStore.getTotalPrice() }}</p>
+                    </div>
+                </template>
             </template>
         </Dialog>
     </div>
@@ -66,7 +76,7 @@ const handleSubmitOrder = () => {
             }
         })
     }
-    
+
     createOrder(order)
         .then((res) => {
             toastStore.showToast("success", "Order create successfully.");
@@ -96,5 +106,4 @@ const handleSubmitOrder = () => {
 
 .order-scroll::-webkit-scrollbar-track {
     border-radius: 10px;
-}
-</style>
+}</style>
