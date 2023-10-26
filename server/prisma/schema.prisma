@@ -34,11 +34,21 @@ model Product {
 }
 
 model Order {
-  id       Int      @id @default(autoincrement())
-  orderNo String   @unique @default(uuid())
-  userId   Int
-  user     User     @relation(fields: [userId], references: [id])
+  id         Int       @id @default(autoincrement())
+  orderNo    String    @unique @default(uuid())
   totalPrice String
-  products    Product[]
-  createdAt DateTime @default(now())
+  status     String    @default("pending")
+  createdAt  DateTime  @default(now())
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id])
+  products   Product[]
+  details    OrderDetails[]
+}
+
+model OrderDetails {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  order     Order    @relation(fields: [orderId], references: [id])
 }

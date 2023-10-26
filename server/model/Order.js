@@ -17,16 +17,27 @@ class Order {
             where: {
                 userId,
             },
-            include: {
-                products: true,
-                user: {
+            select: {
+                orderNo: true,
+                status: true,
+                totalPrice: true,
+                createdAt: true,
+                products: {
                     select: {
+                        id: true,
                         name: true,
-                        email: true,
+                        description: true,
+                        price: true,
+                        image: true,
+                        createdAt: true,
                     },
                 }
             }
         });
+    }
+
+    static async deleteAllOrders() {
+        return await prisma.order.deleteMany({});
     }
 }
 
