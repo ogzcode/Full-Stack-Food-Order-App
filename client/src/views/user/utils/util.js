@@ -2,7 +2,7 @@ export const selectedOption = [
     { label: 'All', value: 'all' },
     { label: 'Completed', value: 'completed' },
     { label: 'Pending', value: 'pending' },
-    { label: 'Canceled', value: 'canceled' }
+    { label: 'Cancelled', value: 'cancelled' }
 ]
 
 export const getUpdedatedStatus = (status) => {
@@ -11,8 +11,8 @@ export const getUpdedatedStatus = (status) => {
             return 'Completed'
         case 'pending':
             return 'Pending'
-        case 'canceled':
-            return 'Canceled'
+        case 'cancelled':
+            return 'Cancelled'
         default:
             return 'Pending'
     }
