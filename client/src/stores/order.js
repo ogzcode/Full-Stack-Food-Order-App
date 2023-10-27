@@ -60,6 +60,16 @@ export const useOrderStore = defineStore("order", () => {
         return totalPrice;
     };
 
+    const getOrderQuantity = (id) => {
+        const index = orders.value.findIndex((order) => order.id === id);
+
+        if (index !== -1) {
+            return orders.value[index].quantity;
+        }
+
+        return 0;
+    }
+
     return {
         orders,
         setOrders,
@@ -70,5 +80,6 @@ export const useOrderStore = defineStore("order", () => {
         productIsHere,
         getProductById,
         getTotalPrice,
+        getOrderQuantity,
     };
 });

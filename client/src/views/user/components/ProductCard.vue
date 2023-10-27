@@ -10,7 +10,7 @@
                 </svg>
             </button>
             <template v-if="props.productIsHere">
-                <span class="px-2 text-slate-600">{{ orderQuantity }}</span>
+                <span class="px-2 text-slate-600">{{ getOrderQuantity() }}</span>
                 <button @click="handleDelete" class=" rounded-full p-2"
                     :class="[props.productIsHere ? 'bg-red-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg"
@@ -63,8 +63,9 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-const orderQuantity = ref(0)
+import { useOrderStore } from '../../../stores/order';
+
+const orderStore = useOrderStore();
 
 const props = defineProps({
     product: {
@@ -76,12 +77,6 @@ const props = defineProps({
     }
 });
 
-watch(() => props.productIsHere, (value) => {
-    if (!value) {
-        orderQuantity.value = 0;
-    }
-})
-
 const emits = defineEmits(['addProduct', "deleteProduct"]);
 
 const getImgURL = (image) => {
@@ -89,15 +84,15 @@ const getImgURL = (image) => {
 };
 
 const handleAdd = () => {
-    orderQuantity.value++;
     emits('addProduct');
 }
 
 const handleDelete = () => {
-    if (orderQuantity.value > 0) {
-        orderQuantity.value--;
-    }
     emits('deleteProduct');
+}
+
+const getOrderQuantity = () => {
+    return orderStore.getOrderQuantity(props.product.id);
 }
 
 
