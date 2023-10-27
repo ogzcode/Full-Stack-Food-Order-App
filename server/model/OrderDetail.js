@@ -12,7 +12,7 @@ class OrderDetail {
     }
 
     static async deleteAllOrderDetails() {
-        return await prisma.orderDetail.deleteMany({});
+        return await prisma.orderDetails.deleteMany({});
     }
 
     static async getOrderDetailsByOrderId(orderId) {

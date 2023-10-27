@@ -19,9 +19,9 @@ export const createOrder = async (req, res) => {
 
     for (let product of products) {
         let item = await Product.getProductById(product.id);
-        productList.push({id : item.id });
+        productList.push({ id: item.id });
         totalPrice += parseInt(item.price) * product.quantity;
-        orderDetail.push({productId: item.id, quantity: product.quantity});
+        orderDetail.push({ productId: item.id, quantity: product.quantity });
     }
 
     await User.setOrderCount(user.id, user.orderCount + 1);
@@ -44,19 +44,66 @@ export const getOrders = async (req, res) => {
     }
 
     const orders = await Order.getOrdersByUserId(user.id);
-    
-    for (let order of orders) {
-        const orderDetails = await OrderDetail.getOrderDetailsByOrderId(order.id);
-        order.details = orderDetails;
-    }
 
     return res.status(200).json({ orders });
+}
+
+export const getOrderDetails = async (req, res) => {
+    const userDetail = req.user;
+    const { orderId } = req.params;
+
+    const user = await User.findUserById(userDetail.id);
+
+    if (user.role !== "user") {
+        return res.status(400).json({ message: "You are not allowed to get order details." });
+    }
+
+    const order = await Order.getOrderById(parseInt(orderId));
+    const orderDetails = await OrderDetail.getOrderDetailsByOrderId(order.id);
+
+    for (let orderDetail of orderDetails) {
+        let products = order.products.map((product) => {
+            if (product.id === orderDetail.productId) {
+                return { ...product, quantity: orderDetail.quantity };
+            }
+            else {
+                return product;
+            }
+        });
+
+        order.products = products;
+    }
+
+    return res.status(200).json({ products: order.products });
+}
+
+export const changeOrderStatus = async (req, res) => {
+    const { status, orderId } = req.body;
+
+    const order = await Order.getOrderById(parseInt(orderId));
+
+    await Order.updateOrderStatus(order.id, status);
+
+    let message = "";
+
+    if (status === "completed") {
+        message = "Order confirmed successfully.";
+    }
+    else if (status === "cancelled") {
+        message = "Order cancelled successfully.";
+    }
+
+
+    return res.status(200).json({ message });
 }
 
 export const deleteAllOrders = async (req, res) => {
     const userDetail = req.user;
 
-    await Order.deleteAllOrders();
+    const orderDetails = await OrderDetail.deleteAllOrderDetails();
+    const orders = await Order.deleteAllOrders();
+
+
 
     return res.status(200).json({ message: "All orders deleted successfully." });
 }

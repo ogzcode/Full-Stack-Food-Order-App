@@ -18,18 +18,28 @@ class Order {
                 userId,
             },
             select: {
+                id: true,
                 orderNo: true,
                 status: true,
                 totalPrice: true,
                 createdAt: true,
+            }
+        });
+    }
+
+    static async getOrderById (id) {
+        return await prisma.order.findUnique({
+            where: {
+                id,
+            },
+            select: {
+                id: true,
                 products: {
                     select: {
                         id: true,
                         name: true,
-                        description: true,
                         price: true,
                         image: true,
-                        createdAt: true,
                     },
                 }
             }
@@ -38,6 +48,17 @@ class Order {
 
     static async deleteAllOrders() {
         return await prisma.order.deleteMany({});
+    }
+
+    static async updateOrderStatus(id, status) {
+        return await prisma.order.update({
+            where: {
+                id,
+            },
+            data: {
+                status,
+            },
+        });
     }
 }
 
