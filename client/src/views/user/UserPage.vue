@@ -106,4 +106,5 @@ const handleSubmitOrder = () => {
 
 .order-scroll::-webkit-scrollbar-track {
     border-radius: 10px;
-}</style>
+}
+</style>
