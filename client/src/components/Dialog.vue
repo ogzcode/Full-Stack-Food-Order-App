@@ -15,7 +15,7 @@
             <div class="py-4 px-6">
                 <slot name="body"></slot>
             </div>
-            <div class="flex justify-end py-4 px-6">
+            <div v-if="footerShow" class="flex justify-end py-4 px-6">
                 <button
                     class="tracking-wide font-normal text-sm px-3 py-1 border border-slate-400 text-slate-800 rounded mr-2"
                     @click="handleClose">{{ props.cancelText }}</button>
@@ -72,6 +72,10 @@ const props = defineProps({
     cancelText: {
         type: String,
         default: 'Cancel'
+    },
+    footerShow: {
+        type: Boolean,
+        default: true
     },
     onSubmit: {
         type: Function,
