@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TokenManager from '../services/tokenServices'
-import { Login, Register, CheckAuth, deleteAccount, updateUser } from '../services/requestServices'
+import { Login, Register, CheckAuth } from "../services/request/AuthRequest"
+import { deleteAccount, updateUser } from "../services/request/UserRequest"
 
 export const useAuth = defineStore('auth', () => {
     const router = useRouter()

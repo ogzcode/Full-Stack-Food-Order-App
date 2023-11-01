@@ -56,10 +56,10 @@ import { onMounted, ref, watch } from "vue";
 import { useDataTable } from "../../stores/useDataTable";
 import DataTable from "../../components/datatable/DataTable.vue"
 import Dialog from "../../components/Dialog.vue"
-import { orderHeader } from "../admin/data/orderHeader"
+import { orderHeader } from "./utils/util"
 import Select from "../../components/Select.vue";
 import { getOrderStatusStyle } from "../admin/utils/util.js";
-import { getOrders, getOrderDetails, changeOrderStatus } from "../../services/requestServices";
+import { getOrders, getOrderDetails, changeOrderStatus } from "../../services/request/OrderRequest.js";
 import { useToastStore } from "../../stores/toast";
 import { formatDateAndGetData } from "../admin/utils/util.js"
 import { selectedOption } from "./utils/util";

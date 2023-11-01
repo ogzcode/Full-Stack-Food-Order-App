@@ -27,7 +27,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useToastStore } from '../../../stores/toast';
-import { createComment } from '../../../services/requestServices';
+import { createComment } from "../../../services/request/CommentRequest.js"
 
 const toastStore = useToastStore()
 

@@ -39,8 +39,7 @@
                             d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                     </svg>
                 </button>
-                <button
-                    @click="handleCompleteDialog(true)"
+                <button @click="handleCompleteDialog(true)"
                     class="border border-emerald-500 rounded-full w-10 h-10 inline-flex justify-center items-center text-emerald-500 mr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                         class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
@@ -142,6 +141,7 @@ import { orderHeader } from "./data/orderHeader"
 import Select from "../../components/Select.vue";
 import image1 from "../../assets/images/landing/image-1.png";
 import { getOrderStatusStyle } from "./utils/util.js";
+import { getOrders } from "../../services/requestServices";
 
 const dataTableStore = useDataTable();
 
@@ -171,6 +171,15 @@ const handleCompleteDialog = (value) => {
 
 
 onMounted(() => {
+    getOrders()
+        .then((res) => {
+            console.log(res.data.orders);
+            //dataTableStore.init(res.data.orders, orderHeader);
+        })
+        .catch((err) => {
+            toastStore.showToast("error", err.message);
+        });
+
     dataTableStore.init(orders, orderHeader);
 })
 
@@ -192,8 +201,8 @@ watch(selectedStatus, (value) => {
     background: #f97316;
     border-radius: 12px;
 }
+
 .order-scroll::-webkit-scrollbar-track {
     border-radius: 10px;
 }
-
 </style>

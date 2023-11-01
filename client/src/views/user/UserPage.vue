@@ -52,7 +52,7 @@ import { useOrderStore } from '../../stores/order';
 import { useToastStore } from '../../stores/toast';
 import NavBar from './components/NavBar.vue';
 import Dialog from '../../components/Dialog.vue';
-import { createOrder } from '../../services/requestServices';
+import { createOrder } from "../../services/request/OrderRequest.js"
 
 const orderStore = useOrderStore();
 

@@ -28,7 +28,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getAllProducts } from '../../services/requestServices';
+import { getAllProducts } from "../../services/request/ProductRequest.js"
 import { useProductStore } from '../../stores/product';
 import { useOrderStore } from '../../stores/order';
 import Dialog from '../../components/Dialog.vue';

@@ -107,3 +107,9 @@ export const deleteAllOrders = async (req, res) => {
 
     return res.status(200).json({ message: "All orders deleted successfully." });
 }
+
+export const getAllOrders = async (req, res) => {
+    const orders = await Order.getAllOrders();
+
+    return res.status(200).json({ orders });
+}
