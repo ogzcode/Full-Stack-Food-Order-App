@@ -20,6 +20,7 @@ model User {
   role       String?  @default("user")
   address    String   @default("")
   orders     Order[]
+  comments   Comment[]
   createdAt  DateTime @default(now())
 }
 
@@ -31,6 +32,7 @@ model Product {
   image       String
   createdAt   DateTime @default(now())
   orders      Order[]
+  comments    Comment[]
 }
 
 model Order {
@@ -51,4 +53,15 @@ model OrderDetails {
   productId Int
   quantity  Int
   order     Order    @relation(fields: [orderId], references: [id])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  userId    Int
+  content   String
+  rating    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 }
