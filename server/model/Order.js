@@ -60,6 +60,19 @@ class Order {
             },
         });
     }
+
+    static async getProductInOrderByUserId(userId, productId) {
+        return await prisma.order.findMany({
+            where: {
+                userId,
+                products: {
+                    some: {
+                        id: productId,
+                    },
+                },
+            }
+        });
+    }
 }
 
 export default Order;
