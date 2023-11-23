@@ -12,10 +12,12 @@ class Order {
             },
         });
     }
-    static async getOrdersByUserId(userId) {
+    static async getOrdersByUserId(userId, options = {}) {
+        const { sort } = options;
         return await prisma.order.findMany({
             where: {
                 userId,
+                
             },
             select: {
                 id: true,
@@ -23,7 +25,10 @@ class Order {
                 status: true,
                 totalPrice: true,
                 createdAt: true,
-            }
+            },
+            orderBy: {
+                createdAt: sort === "asc" ? "asc" : "desc",
+            },
         });
     }
 
@@ -71,6 +76,37 @@ class Order {
                     },
                 },
             }
+        });
+    }
+
+    static getAllOrders() {
+        return prisma.order.findMany({
+            select: {
+                id: true,
+                orderNo: true,
+                status: true,
+                totalPrice: true,
+                createdAt: true,
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        address: true,
+                        phone: true,
+                    },
+                },
+                products: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                        image: true,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
         });
     }
 }

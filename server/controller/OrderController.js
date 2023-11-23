@@ -43,7 +43,7 @@ export const getOrders = async (req, res) => {
         return res.status(400).json({ message: "You are not allowed to get orders." });
     }
 
-    const orders = await Order.getOrdersByUserId(user.id);
+    const orders = await Order.getOrdersByUserId(user.id, { sort: "desc" });
 
     return res.status(200).json({ orders });
 }
@@ -109,6 +109,14 @@ export const deleteAllOrders = async (req, res) => {
 }
 
 export const getAllOrders = async (req, res) => {
+    const userDetail = req.user;
+
+    const user = await User.findUserById(userDetail.id);
+
+    if (user.role !== "admin") {
+        return res.status(400).json({ message: "You are not allowed to get all orders." });
+    }
+
     const orders = await Order.getAllOrders();
 
     return res.status(200).json({ orders });
