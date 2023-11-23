@@ -32,6 +32,7 @@
 </template>
 
 <script setup>
+
 import { useDataTable } from "../../stores/useDataTable"
 
 import TableHeader from './components/TableHeader.vue';

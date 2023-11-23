@@ -1,39 +1,82 @@
-export const getOrderStatusStyle = (status) => {
-    switch (status) {
-        case 'pending':
-            return 'bg-yellow-100 text-yellow-800';
-        case 'Processing':
-            return 'bg-blue-100 text-blue-800';
-        case 'Completed':
-            return 'bg-green-100 text-green-800';
-        case 'cancelled':
-            return 'bg-red-100 text-red-800';
-        default:
-            return 'bg-yellow-100 text-yellow-800';
+export const orderHeader = [
+    {
+        columnName: "Order No",
+        key: "orderNo",
+        width: "200px",
+        sortEnabled: true,
+    },
+    {   
+        columnName: "User",
+        key: "name",
+        width: "80px",
+        sortEnabled: true,
+    },
+    {
+        columnName: "Address",
+        key: "address",
+        width: "80px",
+    },
+    {
+        columnName: "Phone",
+        key: "phone",
+        width: "80px",
+    },
+    {
+        columnName: "Date",
+        key: "createdAt",
+        width: "120px", 
+        sortEnabled: true,
+    },
+    {
+        columnName: "Price",
+        key: "totalPrice",
+        width: "90px",
+    },
+    {
+        columnName: "Status",
+        key: "status",
+        width: "120px",
+        sortEnabled: true,
+    },
+    {
+        columnName: "Actions",
+        key: "actions",
+        width: "160px",
     }
-}
+];
 
-export const formatDateAndGetData = (data) => {
-    const copyData = [...data];
-
-    copyData.forEach((item) => {
-        const date = new Date(item.createdAt);
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        item.createdAt = `${day}-${month}-${year}`;
-    });
-
-    return copyData;
-}
-
-export const formatDate = (inputDate) => {
-    const date = new Date(inputDate);
-
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-
-    const day = date.getDate().toString().padStart(2, '0');
-
-    return `${year}-${month}${day}`;
-}
+export const userHeader = [
+    {
+        columnName: "Name",
+        key: "name",
+        width: "120px",
+        sortEnabled: true,
+    },
+    {
+        columnName: "Email",
+        key: "email",
+        width: "120px",
+        sortEnabled: true,
+    },
+    {
+        columnName: "Phone",
+        key: "phone",
+        width: "120px",
+    },
+    {
+        columnName: "Order Count",
+        key: "orderCount",
+        width: "120px",
+    },
+    {
+        columnName: "Created At",
+        key: "createdAt",
+        width: "120px", 
+        sortEnabled: true,
+    },
+    {
+        columnName: "Actions",
+        key: "actions",
+        width: "120px",
+    }
+];

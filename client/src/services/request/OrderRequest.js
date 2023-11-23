@@ -8,6 +8,10 @@ export const getOrders = async () => {
     return await request.get('/order/getOrders');
 }
 
+export const getAllOrders = async () => {
+    return await request.get('/order/getAllOrders');
+}
+
 export const getOrderDetails = async (orderId) => {
     return await request.get(`/order/getOrderDetails/${orderId}`);
 }

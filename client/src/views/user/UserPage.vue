@@ -20,6 +20,7 @@
                             <p class="text-orange-500 text-xl font-medium mr-4">${{ parseInt(product.price) *
                                 product.quantity }}</p>
                         </div>
+                        
                     </template>
                     <template v-else>
                         <div

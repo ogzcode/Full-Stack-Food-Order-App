@@ -30,7 +30,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { formatDate } from "../utils/util"
+import { formatDate } from '../../../utils/util';
 import { getComments } from "../../../services/request/CommentRequest.js"
 
 const comments = ref([]);

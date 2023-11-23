@@ -33,6 +33,7 @@
 
 
 <script setup>
+import { onMounted, watch } from "vue";
 import { useDataTable } from "../../../stores/useDataTable"
 
 const dataTableStore = useDataTable();
@@ -40,6 +41,7 @@ const dataTableStore = useDataTable();
 const onChangeSelect = (row) => {
     dataTableStore.setSelectedItems(row);
 }
+
 </script>
 
 <style scoped></style>

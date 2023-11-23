@@ -2,8 +2,24 @@ export const orderHeader = [
     {
         columnName: "Order No",
         key: "orderNo",
-        width: "240px",
+        width: "200px",
         sortEnabled: true,
+    },
+    {   
+        columnName: "User",
+        key: "name",
+        width: "80px",
+        sortEnabled: true,
+    },
+    {
+        columnName: "Address",
+        key: "address",
+        width: "80px",
+    },
+    {
+        columnName: "Phone",
+        key: "phone",
+        width: "80px",
     },
     {
         columnName: "Date",
@@ -12,7 +28,7 @@ export const orderHeader = [
         sortEnabled: true,
     },
     {
-        columnName: "Total Price",
+        columnName: "Price",
         key: "totalPrice",
         width: "90px",
     },

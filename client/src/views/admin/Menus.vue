@@ -56,7 +56,7 @@
 
 <script setup>
 import { onMounted, computed } from 'vue';
-import { getAllProducts, createAndUpdateProduct, deleteProductById } from "../../services/requestServices.js";
+import { getAllProducts, createAndUpdateProduct, deleteProductById } from '../../services/request/ProductRequest';
 import { useProductStore } from '../../stores/product';
 import { useToastStore } from "../../stores/toast";
 import ProductCard from './components/ProductCard.vue';
