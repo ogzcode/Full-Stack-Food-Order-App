@@ -51,14 +51,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { useDataTable } from "../../stores/useDataTable";
 import DataTable from "../../components/datatable/DataTable.vue"
 import Dialog from "../../components/Dialog.vue"
 import { userHeader } from "./data/userHeader"
 import { useToastStore } from "../../stores/toast";
-import { getAllUsers, deleteUserById } from "../../services/requestServices";
-import { formatDateAndGetData } from "./utils/util"
+import { getAllUsers, deleteUserById } from "../../services/request/UserRequest.js"
+import { formatDateAndGetData } from "../../utils/util";
 
 const dataTableStore = useDataTable();
 const toastStore = useToastStore();
@@ -90,6 +90,10 @@ const handleDeleteUser = () => {
     handleChangeDeleteDialaog(false);
     deleteUserId.value = null;
 }
+
+onUnmounted(() => {
+    dataTableStore.init(formatDateAndGetData([]), []);
+})
 
 onMounted(() => {
     try {

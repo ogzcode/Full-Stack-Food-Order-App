@@ -11,13 +11,15 @@
             <template v-slot:created-at="{ data }">
                 {{ data.createdAt }}
             </template>
-            <template v-slot:total-price="{ data }">
-                {{ data.totalPrice }}
+            <template v-slot:totalPrice="{ data }">
+                <span>
+                    {{ convertCurrncy(data.totalPrice) }}
+                </span>
             </template>
             <template v-slot:status="{ data }">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium tracking-wide"
                     :class="[getOrderStatusStyle(data.status)]">
-                    {{ getUpdedatedStatus(data.status) }}
+                    {{ getUpdatedStatus(data.status) }}
                 </span>
             </template>
             <template v-slot:actions="{ data }">
@@ -31,7 +33,7 @@
                     </svg>
                 </button>
                 <template v-if="data.status === 'pending'">
-                    <button @click="handleChangeStatus({ orderId: data.id, status: 'cancelled' })"
+                    <button @click="handleCancelOrder(data.id)"
                         class="border border-red-500 rounded-full w-10 h-10 inline-flex justify-center items-center text-red-500 mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -48,6 +50,13 @@
                 <DetailsDialogBody />
             </template>
         </Dialog>
+
+        <Dialog header-title="Cancel Order" :show="cancelOrderDialog" @close="handleCancelOrderDialog"
+            @submit="handleChangeStatus" submit-text="Delete" submit-type="danger">
+            <template v-slot:body>
+                <p class="text text-slate-500">Are you sure you want to cancel this order?</p>
+            </template>
+        </Dialog>
     </div>
 </template>
 
@@ -58,14 +67,11 @@ import DataTable from "../../components/datatable/DataTable.vue"
 import Dialog from "../../components/Dialog.vue"
 import { orderHeader } from "./utils/util"
 import Select from "../../components/Select.vue";
-import { getOrderStatusStyle } from "../admin/utils/util.js";
 import { getOrders, getOrderDetails, changeOrderStatus } from "../../services/request/OrderRequest.js";
 import { useToastStore } from "../../stores/toast";
-import { formatDateAndGetData } from "../admin/utils/util.js"
-import { selectedOption } from "./utils/util";
-import { getUpdedatedStatus } from "./utils/util";
 import { useOrderStore } from "../../stores/order";
 import DetailsDialogBody from "./components/DetailsDialogBody.vue";
+import { selectedOption, getUpdatedStatus, formatDateAndGetData, getOrderStatusStyle, convertCurrncy } from "../../utils/util";
 
 const dataTableStore = useDataTable();
 const toastStore = useToastStore();
@@ -73,6 +79,8 @@ const orderStore = useOrderStore();
 
 const selectedStatus = ref('all');
 const orderDetailsDialog = ref(false);
+const cancelOrderDialog = ref(false);
+const cancelOrderId = ref(null);
 
 const handleOrderDialog = (value) => {
     orderDetailsDialog.value = value;
@@ -80,6 +88,15 @@ const handleOrderDialog = (value) => {
     if (!value) {
         orderStore.setOrders([]);
     }
+}
+
+const handleCancelOrderDialog = (value) => {
+    cancelOrderDialog.value = value;
+}
+
+const handleCancelOrder = (value) => {
+    cancelOrderId.value = value;
+    handleCancelOrderDialog(true);
 }
 
 const handleOrderDetailsDialog = (value) => {
@@ -109,10 +126,10 @@ watch(selectedStatus, (value) => {
     dataTableStore.filterByStatus(value);
 })
 
-const handleChangeStatus = (value) => {
-    changeOrderStatus(value)
+const handleChangeStatus = () => {
+    changeOrderStatus({ orderId: cancelOrderId.value, status: 'cancelled' })
         .then((res) => {
-            toastStore.showToast("success", res.message);
+            toastStore.showToast("success", res.data.message);
             getOrders()
                 .then((res) => {
                     dataTableStore.init(formatDateAndGetData(res.data.orders), orderHeader);
@@ -124,9 +141,11 @@ const handleChangeStatus = (value) => {
         .catch((err) => {
             toastStore.showToast("error", "Order status changed failed.");
         })
+
+    handleCancelOrderDialog(false);
+    cancelOrderId.value = null;
 }
 
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

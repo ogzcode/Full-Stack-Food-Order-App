@@ -5,33 +5,35 @@
                 <Select v-model="selectedStatus" :options="selectedOption" />
             </template>
 
-            <template v-slot:no="{ data }">
-                {{ data.no }}
+            <template v-slot:orderNo="{ data }">
+                {{ data?.orderNo }}
             </template>
             <template v-slot:name="{ data }">
-                {{ data.name }}
+                {{ data?.user?.name }}
             </template>
             <template v-slot:phone="{ data }">
-                {{ data.phone }}
+                {{ data?.user?.phone }}
             </template>
             <template v-slot:address="{ data }">
-                {{ data.address }}
+                {{ data?.user?.address }}
             </template>
-            <template v-slot:create-time="{ data }">
-                {{ data.createTime }}
+            <template v-slot:createdAt="{ data }">
+                {{ data?.createdAt }}
             </template>
-            <template v-slot:total="{ data }">
-                {{ data.total }}
+            <template v-slot:totalPrice="{ data }">
+                <span>
+                    {{ convertCurrncy(data?.totalPrice) }}
+                </span>
             </template>
             <template v-slot:status="{ data }">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium tracking-wide"
-                    :class="[getOrderStatusStyle(data.status)]">
-                    {{ data.status }}
+                    :class="[getOrderStatusStyle(data?.status)]">
+                    {{ getUpdatedStatus(data.status) }}
                 </span>
             </template>
             <template v-slot:actions="{ data }">
                 <button @click="handleOrderDialog(true)"
-                    class="border border-violet-500 rounded-full w-10 h-10 inline-flex justify-center items-center text-violet-500 mr-2">
+                    class="border border-violet-500 rounded-full w-9 h-9 inline-flex justify-center items-center text-violet-500 mr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                         class="bi bi-eye-fill" viewBox="0 0 16 16">
                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
@@ -39,8 +41,8 @@
                             d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                     </svg>
                 </button>
-                <button @click="handleCompleteDialog(true)"
-                    class="border border-emerald-500 rounded-full w-10 h-10 inline-flex justify-center items-center text-emerald-500 mr-2">
+                <button @click="handleSetOrder({ orderId: data?.id, status: 'completed' })"
+                    class="border border-emerald-500 rounded-full w-9 h-9 inline-flex justify-center items-center text-emerald-500 mr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                         class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
                         <path
@@ -48,8 +50,8 @@
                     </svg>
                 </button>
                 <button
-                    class="border border-red-500 rounded-full w-10 h-10 inline-flex justify-center items-center text-red-500"
-                    @click="handleChangeDeleteDialaog(true)">
+                    class="border border-red-500 rounded-full w-9 h-9 inline-flex justify-center items-center text-red-500"
+                    @click="handleSetOrder({ orderId: data?.id, status: 'cancelled' })">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                         class="bi bi-trash-fill" viewBox="0 0 16 16">
                         <path
@@ -59,20 +61,21 @@
             </template>
         </DataTable>
 
-        <Dialog headerTitle="Delete User" :show="deleteDialog" @close="handleChangeDeleteDialaog" submit-text="Delete"
-            submit-type="danger">
+        <Dialog headerTitle="Cancel Order" :show="deleteDialog" @close="handleChangeDeleteDialaog" submit-text="Delete"
+            submit-type="danger" @submit="handleChangeStatus">
             <template v-slot:body>
                 <p class="text text-slate-500">Are you sure you want to cancel this order?</p>
             </template>
         </Dialog>
+
         <Dialog headerTitle="Complete the order" :show="completeDialog" @close="handleCompleteDialog" submit-text="Complete"
-            submit-type="success">
+            submit-type="success" @submit="handleChangeStatus">
             <template v-slot:body>
                 <p class="text text-slate-500">Are you sure you want to complete the order?</p>
             </template>
         </Dialog>
-        <Dialog header-title="Order Details" :show="orderDetailsDialog" @close="handleOrderDialog"
-            :submit-is-disabled="true">
+
+        <Dialog header-title="Order Details" :show="orderDetailsDialog" @close="handleOrderDialog" :submit-show="false">
             <template v-slot:body>
                 <div class="max-h-[400px] overflow-y-auto order-scroll pr-2">
                     <div class="border border-orange-500 rounded flex justify-between items-center mb-4">
@@ -132,30 +135,26 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useDataTable } from "../../stores/useDataTable";
 import DataTable from "../../components/datatable/DataTable.vue"
 import Dialog from "../../components/Dialog.vue"
-import { orders } from "./data/orders"
 import { orderHeader } from "./data/orderHeader"
 import Select from "../../components/Select.vue";
 import image1 from "../../assets/images/landing/image-1.png";
-import { getOrderStatusStyle } from "./utils/util.js";
-import { getOrders } from "../../services/requestServices";
+import { changeOrderStatus, getAllOrders } from "../../services/request/OrderRequest.js";
+import { formatDateAndGetData, getOrderStatusStyle, convertCurrncy } from "../../utils/util";
+import { selectedOption, getUpdatedStatus } from "../../utils/util";
+import { useToastStore } from "../../stores/toast";
 
 const dataTableStore = useDataTable();
+const toastStore = useToastStore();
 
 const deleteDialog = ref(false);
-const selectedStatus = ref('All');
+const selectedStatus = ref('all');
 const orderDetailsDialog = ref(false);
 const completeDialog = ref(false);
-
-const selectedOption = [
-    { label: 'All', value: 'All' },
-    { label: 'Completed', value: 'Completed' },
-    { label: 'Pending', value: 'Pending' },
-    { label: 'Canceled', value: 'Canceled' }
-]
+const selectedOrder = ref(null);
 
 const handleChangeDeleteDialaog = (value) => {
     deleteDialog.value = value;
@@ -169,23 +168,55 @@ const handleCompleteDialog = (value) => {
     completeDialog.value = value;
 }
 
+const handleSetOrder = (value) => {
+    selectedOrder.value = value;
+
+    if (value.status === 'completed') {
+        handleCompleteDialog(true);
+    } else {
+        handleChangeDeleteDialaog(true);
+    }
+
+}
+
+onUnmounted(() => {
+    dataTableStore.init([], []);
+})
 
 onMounted(() => {
-    getOrders()
+    getAllOrders()
         .then((res) => {
-            console.log(res.data.orders);
-            //dataTableStore.init(res.data.orders, orderHeader);
+            dataTableStore.init(formatDateAndGetData(res.data.orders), orderHeader);
         })
         .catch((err) => {
             toastStore.showToast("error", err.message);
         });
-
-    dataTableStore.init(orders, orderHeader);
 })
 
 watch(selectedStatus, (value) => {
     dataTableStore.filterByStatus(value);
 })
+
+const handleChangeStatus = () => {
+    changeOrderStatus({ orderId: selectedOrder.value.orderId, status: selectedOrder.value.status })
+        .then((res) => {
+            toastStore.showToast("success", res.data.message);
+            getAllOrders()
+                .then((res) => {
+                    dataTableStore.init(formatDateAndGetData(res.data.orders), orderHeader);
+                })
+                .catch((err) => {
+                    toastStore.showToast("error", err.message);
+                });
+        })
+        .catch((err) => {
+            toastStore.showToast("error", "Order status changed failed.");
+        })
+
+    handleChangeDeleteDialaog(false);
+    handleCompleteDialog(false);
+    selectedOrder.value = null;
+}
 </script>
 
 <style scoped>
