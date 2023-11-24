@@ -109,6 +109,14 @@ class Order {
             },
         });
     }
+
+    static async getPendingOrderCount() {
+        return await prisma.order.count({
+            where: {
+                status: "pending",
+            },
+        });
+    }
 }
 
 export default Order;

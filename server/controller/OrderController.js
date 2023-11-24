@@ -54,10 +54,6 @@ export const getOrderDetails = async (req, res) => {
 
     const user = await User.findUserById(userDetail.id);
 
-    if (user.role !== "user") {
-        return res.status(400).json({ message: "You are not allowed to get order details." });
-    }
-
     const order = await Order.getOrderById(parseInt(orderId));
     const orderDetails = await OrderDetail.getOrderDetailsByOrderId(order.id);
 
@@ -120,4 +116,14 @@ export const getAllOrders = async (req, res) => {
     const orders = await Order.getAllOrders();
 
     return res.status(200).json({ orders });
+}
+
+export const getPendingDataCount = async (req, res) => {
+    const userDetail = req.user;
+
+    const user = await User.findUserById(userDetail.id);
+
+    const pendingOrderCount = await Order.getPendingOrderCount();
+
+    return res.status(200).json({ pendingOrderCount });
 }

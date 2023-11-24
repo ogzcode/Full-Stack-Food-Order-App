@@ -7,7 +7,8 @@ import {
     deleteAllOrders,
     getOrderDetails,
     changeOrderStatus,
-    getAllOrders
+    getAllOrders,
+    getPendingDataCount
 } from '../controller/OrderController.js';
 
 const router = express.Router();
@@ -18,5 +19,6 @@ router.delete('/deleteAllOrders', authMiddleware, deleteAllOrders);
 router.get('/getOrderDetails/:orderId', authMiddleware, getOrderDetails);
 router.put('/changeOrderStatus', authMiddleware, changeOrderStatus);
 router.get('/getAllOrders', authMiddleware, getAllOrders);
+router.get('/getPendingDataCount', authMiddleware, getPendingDataCount);
 
 export default router;
