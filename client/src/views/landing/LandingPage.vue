@@ -1,6 +1,5 @@
 <template>
     <div>
-        <NavBar />
         <Home />
         <Services />
         <Menu />
@@ -9,11 +8,10 @@
 </template>
 
 <script setup>
-import NavBar from './components/NavBar.vue';
-import Home from './components/Home.vue';
-import Services from './components/Services.vue';
-import Menu from './components/Menu.vue';
-import Footer from './components/Footer.vue';
+import Home from './section/Home.vue';
+import Services from './section/Services.vue';
+import Menu from './section/Menu.vue';
+import Footer from './section/Footer.vue';
 
 </script>
 

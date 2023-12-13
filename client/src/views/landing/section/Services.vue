@@ -9,7 +9,7 @@
             </p>
         </div>
         <div class="flex justify-around mx-20">
-            <div class="services-card max-w-[360px] bg-slate-100 p-8 rounded shadow-md hover:bg-orange-500">
+            <div class="services-card max-w-[360px] bg-slate-50 p-8 rounded shadow hover:bg-orange-500">
                 <div
                     class="w-[72px] h-[72px] bg-white rounded-full flex justify-center items-center mx-auto mb-8 fill-orange-800">
                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" className="bi bi-truck"
@@ -24,9 +24,9 @@
                     Expedita repudiandae quia tenetur aspernatur
                 </p>
             </div>
-            <div class="services-card max-w-[360px] bg-slate-100 p-8 rounded shadow-md hover:bg-orange-500">
+            <div class="services-card max-w-[360px] bg-slate-50 p-8 rounded shadow hover:bg-orange-500">
                 <div
-                    class="w-[72px] h-[72px] bg-white rounded-full flex justify-center items-center mx-auto mb-8 fill-orange-800">
+                    class="w-[72px] h-[72px] bg-white rounded-full flex justify-center items-center mx-auto mb-8 fill-orange-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" class="bi bi-basket2"
                         viewBox="0 0 16 16">
                         <path
@@ -41,9 +41,9 @@
                     Expedita repudiandae quia tenetur aspernatur
                 </p>
             </div>
-            <div class="services-card max-w-[360px] bg-slate-100 p-8 rounded shadow-md hover:bg-orange-500">
+            <div class="services-card max-w-[360px] bg-slate-50 p-8 rounded shadow hover:bg-orange-500">
                 <div
-                    class="w-[72px] h-[72px] bg-white rounded-full flex justify-center items-center mx-auto mb-8 fill-orange-800">
+                    class="w-[72px] h-[72px] bg-white rounded-full flex justify-center items-center mx-auto mb-8 fill-orange-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" class="bi bi-alarm"
                         viewBox="0 0 16 16">
                         <path
