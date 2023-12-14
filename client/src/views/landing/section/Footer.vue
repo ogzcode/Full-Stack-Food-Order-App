@@ -1,15 +1,15 @@
 <template>
-    <footer class="bg-slate-800 py-10" id="contact">
+    <footer class="bg-zinc-800 py-10" id="contact">
         <h1 class="text-3xl font-bold tracking-wide text-center text-white mb-4">Food<span
                 class="text-orange-600">-ER</span></h1>
         <div class="mb-10">
-            <p class="w-1/4 text-center mx-auto text-white text-sm tracking-wide">
+            <p class="lg:w-1/4 md:w-2/4 sm:w-3/4 text-center mx-auto text-white text-sm tracking-wide">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Nunc iaculis pulvinar nulla semper pretium. Sed sodales
                 libero ac sem pellentesque, et tempus mi finibus
             </p>
         </div>
-        <div class="flex justify-between items-center px-20">
+        <div class="flex justify-between items-center md:flex-row flex-col px-20">
             <div class="flex gap-x-4">
                 <a href="#" class="w-[48px] h-[48px] bg-orange-600 text-white rounded-full flex justify-center items-center transition hover:bg-orange-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -47,7 +47,7 @@
                     </svg>
                 </a>
             </div>
-            <div class="">
+            <div class="md:mt-0 mt-8">
                 <h1 class="text-lg mb-2 font-medium tracking-wide text-white">Contact with Email</h1>
                 <div class="flex rounded overflow-hidden">
                     <input type="text" placeholder="Send Email..." class="outline-0 p-2 w-[360px]" />

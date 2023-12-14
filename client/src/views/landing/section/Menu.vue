@@ -1,93 +1,47 @@
 <template>
-    <div class="py-20 bg-orange-50 flex flex-col lg:flex-row" id="menu">
-        <div class="flex flex-col items-center mb-16 flex-1">
-            <h1 class="font-bold text-3xl text-slate-800 mb-4 tracking-wide">Menu</h1>
-            <p class="w-1/3 text-center text-slate-800 tracking-wide font-light">
-                We are here to deliver the most delicious food at the most affordable prices.
-                Choose from our wide range of menu options,
-                Order to any address, and it will be at your door in minutes
-            </p>
-        </div>
-
-        <swiper :onSwiper="onSwiper" :onSlideChange="onSlideChange" :slidesPerView="1" class="flex-1" :spaceBetween="30" :breakpoints="{
-            640: {
-                slidesPerView: 1,
-                spaceBetween: 30
-            },
-            768: {
-                slidesPerView: 2,
-                spaceBetween: 30
-            },
-            1024: {
-                slidesPerView: 2,
-                spaceBetween: 30
-            }
-        }">
-            <template v-for="n in 7" :key="n">
-                <swiper-slide>
-                    <div class="bg-red-200 p-4 border cursor-pointer border-orange-50 hover:border-orange-500 rounded">
-                        <div class="bg-white shadow h-[200px] flex justify-center items-center rounded mb-4">
-                            <img :src="getImageSource(n)" alt="" class="w-full aspect-auto" />
+    <div class="py-20 bg-zinc-50 flex flex-col" id="menu">
+        <h1 class="font-bold text-3xl text-center text-slate-800 mb-10 tracking-wide">Menu</h1>
+        <div class="px-20 relative">
+            <swiper class="overflow-auto" :modules="modules" :slides-per-view="1" :space-between="50" @swiper="onSwiper"
+                @slide-change="onSlideChange" :pagination="{ clickable: true }" :breakpoints="{
+                    '1024': {
+                        slidesPerView: 2,
+                        spaceBetween: 50,
+                    },
+                    '1280': {
+                        slidesPerView: 3,
+                        spaceBetween: 50,
+                    },
+                }"
+                >
+                <template v-for=" n  in  7 " :key="n">
+                    <swiper-slide>
+                        <div class="flex justify-center">
+                            <div class="w-[22rem] p-4 transition rounded-lg border border-zinc-50 hover:border-orange-500 image-box">
+                                <div
+                                    class="w-[20rem] h-[20rem] bg-white shadow flex justify-center items-center rounded mb-4 relative">
+                                    <img :src="getImageSource(n)" alt="" class="w-full" />
+                                    <span class="text-orange-500 absolute top-2 right-4 font-bold ml-2">$12.50</span>
+                                </div>
+                                <p class="text-xl font-medium text-zinc-800 mb-1">Lorem Ipsum</p>
+                                <p class="text-zinc-500">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit...
+                                </p>
+                            </div>
                         </div>
-                        <p class="text-xl font-medium text-orange-800 mb-1">Lorem Ipsum</p>
-                        <p class="text-slate-500 text-sm">Price: <span class="text-orange-500 font-bold ml-2">$12.50</span>
-                        </p>
-                    </div>
-                </swiper-slide>
-            </template>
-        </swiper>
-
-        <!-- <div class="flex mx-20 justify-around flex-wrap gap-y-10">
-            <div class="w-[240px] p-4 border cursor-pointer border-orange-50 hover:border-orange-500 rounded">
-                <div class="bg-white shadow h-[200px] flex justify-center items-center rounded mb-4">
-                    <img :src="image1" alt="" class="w-full" />
-                </div>
-                <p class="text-xl font-medium text-orange-800 mb-1">Lorem Ipsum</p>
-                <p class="text-slate-500 text-sm">Price: <span class="text-orange-500 font-bold ml-2">$12.50</span></p>
-            </div>
-            <div class="w-[240px] p-4 border cursor-pointer border-orange-50 hover:border-orange-500 rounded">
-                <div class="bg-white shadow h-[200px] flex justify-center items-center rounded mb-4">
-                    <img :src="image2" alt="" class="w-full" />
-                </div>
-                <p class="text-xl font-medium text-orange-800 mb-1">Lorem Ipsum</p>
-                <p class="text-slate-500 text-sm">Price: <span class="text-orange-500 font-bold ml-2">$12.50</span></p>
-            </div>
-            <div class="w-[240px] p-4 border cursor-pointer border-orange-50 hover:border-orange-500 rounded">
-                <div class="bg-white shadow h-[200px] flex justify-center items-center rounded mb-4">
-                    <img :src="image3" alt="" class="w-full" />
-                </div>
-                <p class="text-xl font-medium text-orange-800 mb-1">Lorem Ipsum</p>
-                <p class="text-slate-500 text-sm">Price: <span class="text-orange-500 font-bold ml-2">$12.50</span></p>
-            </div>
-            <div class="w-[240px] p-4 border cursor-pointer border-orange-50 hover:border-orange-500 rounded">
-                <div class="bg-white shadow h-[200px] flex justify-center items-center rounded mb-4">
-                    <img :src="image5" alt="" class="w-full" />
-                </div>
-                <p class="text-xl font-medium text-orange-800 mb-1">Lorem Ipsum</p>
-                <p class="text-slate-500 text-sm">Price: <span class="text-orange-500 font-bold ml-2">$12.50</span></p>
-            </div>
-            <div class="w-[240px] p-4 border cursor-pointer border-orange-50 hover:border-orange-500 rounded">
-                <div class="bg-white shadow h-[200px] flex justify-center items-center rounded mb-4">
-                    <img :src="image6" alt="" class="w-full" />
-                </div>
-                <p class="text-xl font-medium text-orange-800 mb-1">Lorem Ipsum</p>
-                <p class="text-slate-500 text-sm">Price: <span class="text-orange-500 font-bold ml-2">$12.50</span></p>
-            </div>
-            <div class="w-[240px] p-4 border cursor-pointer border-orange-50 hover:border-orange-500 rounded">
-                <div class="bg-white shadow h-[200px] flex justify-center items-center rounded mb-4">
-                    <img :src="image7" alt="" class="w-full" />
-                </div>
-                <p class="text-xl font-medium text-orange-800 mb-1">Lorem Ipsum</p>
-                <p class="text-slate-500 text-sm">Price: <span class="text-orange-500 font-bold ml-2">$12.50</span></p>
-            </div>
-        </div> -->
+                    </swiper-slide>
+                </template>
+            </swiper>
+        </div>
     </div>
 </template>
 
 <script setup>
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Pagination } from 'swiper/modules';
 
 import 'swiper/swiper-bundle.css';
+import 'swiper/css/pagination';
 
 import image1 from '@/assets/images/landing/image-1.png';
 import image2 from '@/assets/images/landing/image-2.png';
@@ -96,13 +50,11 @@ import image5 from '@/assets/images/landing/image-5.png';
 import image6 from '@/assets/images/landing/image-6.png';
 import image7 from '@/assets/images/landing/image-7.png';
 
-const onSwiper = (swiper) => {
-    console.log(swiper);
-};
+const modules = [Pagination];
 
-const onSlideChange = () => {
-    console.log('slide change');
-};
+const onSwiper = (swiper) => {};
+
+const onSlideChange = () => {};
 
 const getImageSource = (n) => {
     switch (n) {
@@ -125,4 +77,21 @@ const getImageSource = (n) => {
 
 </script>
 
-<style scoped></style>
+<style>
+.swiper-pagination {
+    position: initial !important;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: #f97316 !important;
+}
+
+.image-box img {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.image-box:hover img {
+    transform: scale(1.1) rotate(5deg);
+}
+</style>

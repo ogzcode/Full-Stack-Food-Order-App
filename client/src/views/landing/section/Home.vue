@@ -9,7 +9,7 @@
                     why we offer a wide variety of restaurants to choose from, all delivered right to your door.
                 </p>
                 <a href="#menu"
-                    class="inline-block mt-8 bg-white px-8 py-2 font-medium tracking-wide text-orange-700 rounded shadow-xl menu-btn">
+                    class="inline-block mt-8 bg-white px-8 py-2 font-semibold tracking-wide text-orange-700 rounded shadow-xl menu-btn">
                     <span>Go Menu</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                         className="bi bi-arrow-right" viewBox="0 0 16 16">
