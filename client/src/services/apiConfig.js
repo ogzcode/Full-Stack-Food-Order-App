@@ -27,7 +27,6 @@ export const setupInterceptors = () => {
             return response;
         },
         (error) => {
-            console.log(error)
             if (error.code === 'ECONNABORTED' || error.response.status === 401) {
                 TokenManager.destroyToken();
                 window.location.reload();

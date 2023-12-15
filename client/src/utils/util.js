@@ -58,3 +58,36 @@ export const getOrderStatusStyle = (status) => {
             return 'bg-yellow-100 text-yellow-800';
     }
 }
+
+export const getImgURL = (image) => {
+    return "http://localhost:3000/public/docs/" + image;
+};
+
+export const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
+
+export const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    return passwordRegex.test(password);
+}
+
+export const validateInputForSubmit = (email, password) => {
+    let errorInput = [];
+    if (!validateEmail(email)) {
+        errorInput = [...errorInput, 'email'];
+    }
+    else {
+        errorInput = errorInput.filter(item => item !== 'email');
+    }
+
+    if (!validatePassword(password)) {
+        errorInput = [...errorInput, 'password'];
+    }
+    else {
+        errorInput = errorInput.filter(item => item !== 'password');
+    }
+
+    return errorInput
+}

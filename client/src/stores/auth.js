@@ -30,7 +30,6 @@ export const useAuth = defineStore('auth', () => {
                 }
             })
             .catch((err) => {
-                console.log(err)
                 error.value = err.response?.data.error
             })
     }
@@ -48,7 +47,6 @@ export const useAuth = defineStore('auth', () => {
                 router.push({ name: 'Login' })
             })
             .catch((err) => {
-                console.log(err)
                 error.value = err.response.data.error
             })
     }
@@ -67,7 +65,6 @@ export const useAuth = defineStore('auth', () => {
                     }
                 })
                 .catch((err) => {
-                    console.log(err)
                     error.value = err.response.data.error
                 })
         }
@@ -79,11 +76,9 @@ export const useAuth = defineStore('auth', () => {
     const deleteAccountByUser = (password) => {
         deleteAccount(password)
             .then((response) => {
-                console.log(response)
                 logout()
             })
             .catch((err) => {
-                console.log(err)
                 error.value = err.response.data.error
             })
     }
@@ -94,7 +89,6 @@ export const useAuth = defineStore('auth', () => {
                 user.value = response.data.user
             })
             .catch((err) => {
-                console.log(err)
                 error.value = err.response.data.error
             })
     }

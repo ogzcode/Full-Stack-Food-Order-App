@@ -36,7 +36,6 @@ const products = ref([]);
 
 onMounted(async () => {
     const { data } = await getAllProducts();
-    console.log(data);
     products.value = data.products;
 });
 

@@ -64,6 +64,7 @@
 
 <script setup>
 import { useOrderStore } from '../../../stores/order';
+import { getImgURL } from "../../../utils/util";
 
 const orderStore = useOrderStore();
 
@@ -78,10 +79,6 @@ const props = defineProps({
 });
 
 const emits = defineEmits(['addProduct', "deleteProduct", "commentDialog"]);
-
-const getImgURL = (image) => {
-    return "http://localhost:3000/public/docs/" + image;
-};
 
 const handleAdd = () => {
     emits('addProduct');
