@@ -77,3 +77,22 @@ export const updateUser = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 }
+
+export const changePassword = async (req, res) => {
+    const { newPassword, oldPassword } = req.body;
+
+    try {
+        const user = await User.checkPassword(req.user.id, oldPassword);
+
+        if (!user) {
+            return res.status(401).json({ error: "Invalid password." });
+        }
+
+        const updatedUser = await User.updateUserPassword(req.user.id, newPassword);
+
+        res.status(200).json({ message: "Password updated successfully." });
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}

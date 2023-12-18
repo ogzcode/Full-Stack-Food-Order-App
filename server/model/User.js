@@ -97,8 +97,11 @@ export default class User {
         if (!isPasswordValid) {
             throw new Error('Invalid password.')
         }
+
+        return user
     }
 
+    //Kaldırılabilir
     static async updateUserById(id, name, email, newPassword, phone, address) {
         const updateData = {
             name,
@@ -126,6 +129,18 @@ export default class User {
                 createdAt: true,
                 phone: true,
                 address: true,
+            }
+        })
+    }
+
+    static async updateUserPassword(id, newPassword) {
+        const hashPassword = await bcrypt.hash(newPassword, 10);
+        return await prisma.user.update({
+            where: {
+                id
+            },
+            data: {
+                password: hashPassword
             }
         })
     }
