@@ -1,6 +1,6 @@
 <template>
     <div class="text-center mt-8">
-        <button class="text-white w-full bg-orange-500 font-semibold tracking-wide px-8 py-2 rounded hover:bg-orange-600"
+        <button class="text-white w-full bg-orange-500 font-semibold tracking-wide px-8 py-2 rounded hover:bg-orange-600 disabled:bg-orange-400"
             :type="props.type" :disabled="props.disabled">
             {{ props.text }}
         </button>
