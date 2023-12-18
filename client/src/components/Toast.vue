@@ -1,6 +1,6 @@
 <template>
     <transition name="toast-slide" mode="out-in">
-        <div class="fixed top-8 right-8 min-w-[320px] rounded flex items-center gap-x-4 py-4 px-6 shadow-xl"
+        <div class="fixed top-8 right-8 min-w-[320px] rounded flex items-center gap-x-4 py-4 px-6 shadow-lg"
             v-if="toastStore.show" :class="toastStore.getToastStyle()">
             <div class="text-white">
 
