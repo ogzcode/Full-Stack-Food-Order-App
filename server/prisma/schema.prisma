@@ -42,7 +42,7 @@ model Order {
   status     String    @default("pending")
   createdAt  DateTime  @default(now())
   userId     Int
-  user       User      @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   products   Product[]
   details    OrderDetails[]
 }
@@ -52,7 +52,7 @@ model OrderDetails {
   orderId   Int
   productId Int
   quantity  Int
-  order     Order    @relation(fields: [orderId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
@@ -62,6 +62,6 @@ model Comment {
   content   String
   rating    Int
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

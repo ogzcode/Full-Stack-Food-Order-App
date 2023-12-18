@@ -2,7 +2,7 @@
     <div class="mb-4 relative">
         <label class="text-sm block mb-1 text-zinc-600">{{ label }}</label>
         <input 
-            :value="value" 
+            :value="props.value" 
             :type="props.type" 
             :disabled="props.disabled"
             class="border border-zinc-400 rounded w-full p-2 text-zinc-600 transition focus:border-orange-400"
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
     label: {
@@ -38,10 +38,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:value'])
 
-const value = ref(props.value)
-
 const updateValue = (e) => {
-    value.value = e.target.value
     emit('update:value', e.target.value)
 }
 
