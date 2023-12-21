@@ -11,48 +11,50 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique
-  name       String
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  firstName  String    @default("")
+  lastName   String    @default("")
+  username   String
   password   String
-  phone      String   @default("")
-  orderCount Int      @default(0)
-  role       String?  @default("user")
-  address    String   @default("")
+  phone      String    @default("")
+  orderCount Int       @default(0)
+  role       String?   @default("user")
+  address    String    @default("")
   orders     Order[]
   comments   Comment[]
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
   description String
   price       String
   image       String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime  @default(now())
   orders      Order[]
   comments    Comment[]
 }
 
 model Order {
-  id         Int       @id @default(autoincrement())
-  orderNo    String    @unique @default(uuid())
+  id         Int            @id @default(autoincrement())
+  orderNo    String         @unique @default(uuid())
   totalPrice String
-  status     String    @default("pending")
-  createdAt  DateTime  @default(now())
+  status     String         @default("pending")
+  createdAt  DateTime       @default(now())
   userId     Int
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   products   Product[]
   details    OrderDetails[]
 }
 
 model OrderDetails {
-  id        Int      @id @default(autoincrement())
+  id        Int   @id @default(autoincrement())
   orderId   Int
   productId Int
   quantity  Int
-  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order     Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
