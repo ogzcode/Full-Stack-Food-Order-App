@@ -2,13 +2,13 @@ import User from '../model/User.js'
 import jwt from 'jsonwebtoken'
 
 export const register = async (req, res) => {
-    const { email, name, password } = req.body
+    const { email, username, password } = req.body
     try {
         if (email === "admin@mail.com") {
-            const user = await User.createUser({ email, name, password, role: 'admin' });
+            const user = await User.createUser({ email, username, password, role: 'admin' });
         }
         else {
-            const user = await User.createUser({ email, name, password });
+            const user = await User.createUser({ email, username, password });
         }
 
         res.status(201).json({ message: 'User created successfully.' })
@@ -31,11 +31,8 @@ export const login = async (req, res) => {
             user: {
                 id: user.id,
                 email: user.email,
-                name: user.name,
+                username: user.username,
                 role: user.role,
-                address: user.address,
-                phone: user.phone,
-                orderCount: user.orderCount
             }
         })
     } catch (error) {
@@ -54,13 +51,9 @@ export const checkAuth = async (req, res) => {
                 email: user.email,
                 name: user.name,
                 role: user.role,
-                address: user.address,
-                phone: user.phone,
-                orderCount: user.orderCount
             }
         })
     } catch (error) {
-        console.log(error)
         res.status(400).json({ error: error.message })
     }
 }
