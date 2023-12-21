@@ -10,12 +10,18 @@ export const useAuth = defineStore('auth', () => {
     const user = ref(null)
     const isAuthenticated = ref(false)
     const error = ref(null)
+    const loading = ref(false)
 
     const clearError = () => {
         error.value = null
     }
 
+    const setLoading = (value) => {
+        loading.value = value
+    }
+
     const login = ({ email, password }) => {
+        setLoading(true);
         Login({ email, password })
             .then((response) => {
                 TokenManager.saveToken(response.data.token)
@@ -32,6 +38,9 @@ export const useAuth = defineStore('auth', () => {
             .catch((err) => {
                 error.value = err.response?.data.error
             })
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
     const logout = () => {
@@ -41,8 +50,8 @@ export const useAuth = defineStore('auth', () => {
         router.push({ name: 'Login' })
     }
 
-    const signup = ({ email, password, fullName }) => {
-        Register({ email, password, name: fullName })
+    const signup = ({ email, password, username }) => {
+        Register({ email, password, username })
             .then((response) => {
                 router.push({ name: 'Login' })
             })
@@ -83,6 +92,7 @@ export const useAuth = defineStore('auth', () => {
             })
     }
 
+    //Değiştirilecek
     const updateUserDetails = ({ name, email, oldPassword, newPassword, phone, address }) => {
         updateUser({ name, email, oldPassword, newPassword, phone, address })
             .then((response) => {
@@ -96,12 +106,14 @@ export const useAuth = defineStore('auth', () => {
     return {
         user,
         isAuthenticated,
+        loading,
         error,
         checkAuth,
         login,
         logout,
         signup,
         clearError,
+        setLoading,
         deleteAccountByUser,
         updateUserDetails
     }

@@ -9,7 +9,7 @@
                 <p class="text-zinc-600 mb-4">
                     Sign up to access amazing food!
                 </p>
-                <FormInput label="Full Name" v-model:value="fullName" :value="fullName" />
+                <FormInput label="User Name" v-model:value="username" :value="username" />
                 <FormInput label="Email" v-model:value="email" :value="email" :type="email">
                     <template #error v-if="inputError.includes('email')">
                         <p class="text-red-500 text-xs mt-1">Enter a valid email address.</p>
@@ -46,7 +46,7 @@ import { validateInputForSubmit } from "../../utils/util.js";
 const showPassword = ref(false);
 const email = ref('');
 const password = ref('');
-const fullName = ref('');
+const username = ref('');
 const inputError = ref([]);
 
 const authStore = useAuth();
@@ -61,11 +61,11 @@ const handleSubmit = (e) => {
         return;
     }
 
-    authStore.signup({ email: email.value, password: password.value, fullName: fullName.value });
+    authStore.signup({ email: email.value, password: password.value, username: username.value });
     showPassword.value = false;
     email.value = '';
     password.value = '';
-    fullName.value = '';
+    username.value = '';
 }
 watch(() => authStore.error, (value) => {
     if (value) {
