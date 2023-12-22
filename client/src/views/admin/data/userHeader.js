@@ -1,9 +1,19 @@
 export const userHeader = [
     {
-        columnName: "Name",
-        key: "name",
+        columnName: "Username",
+        key: "username",
         width: "120px",
         sortEnabled: true,
+    },
+    {
+        columnName: "First Name",
+        key: "firstName",
+        width: "120px",
+    },
+    {
+        columnName: "Last Name",
+        key: "lastName",
+        width: "120px",
     },
     {
         columnName: "Email",

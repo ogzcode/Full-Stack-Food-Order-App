@@ -6,7 +6,7 @@
             </template>
 
             <template v-slot:name="{ data }">
-                {{ data.name }}
+                {{ data.username }}
             </template>
             <template v-slot:email="{ data }">
                 {{ data.email }}

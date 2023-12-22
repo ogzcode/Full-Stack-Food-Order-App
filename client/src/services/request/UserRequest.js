@@ -16,3 +16,11 @@ export const deleteAccount = async (password) => {
 export const updateUser = async (userData) => {
     return await request.patch('/user/updateUser', userData);
 }
+
+export const changePassword = async (passwordData) => {
+    return await request.patch('/user/updatePassword', passwordData);
+}
+
+export const getUserDetails = async () => {
+    return await request.get('/user/getUserDetails');
+}

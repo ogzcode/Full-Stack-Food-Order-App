@@ -1,22 +1,15 @@
 <template>
     <div class="mb-4 relative">
         <label class="text-sm block mb-1 text-zinc-600">{{ label }}</label>
-        <input 
-            :value="props.value" 
-            :type="props.type" 
-            :disabled="props.disabled"
+        <input :value="props.value" :type="props.type" :disabled="props.disabled"
             class="border border-zinc-400 rounded w-full p-2 text-zinc-600 transition focus:border-orange-400"
-            @input="updateValue" 
-            required 
-        />
+            @input="updateValue" required />
         <slot name="body"></slot>
         <slot name="error"></slot>
     </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
-
 const props = defineProps({
     label: {
         type: String,

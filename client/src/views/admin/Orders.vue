@@ -8,8 +8,8 @@
             <template v-slot:orderNo="{ data }">
                 {{ data?.orderNo }}
             </template>
-            <template v-slot:name="{ data }">
-                {{ data?.user?.name }}
+            <template v-slot:username="{ data }">
+                {{ data?.user?.username }}
             </template>
             <template v-slot:phone="{ data }">
                 {{ data?.user?.phone }}
