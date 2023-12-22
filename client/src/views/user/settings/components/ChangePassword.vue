@@ -29,7 +29,7 @@
                 </template>
             </FormInput>
             <div class="mt-8">
-                <button class="text-sm tracking-wide font-medium px-6 py-2 bg-sky-500 text-white rounded ">Update
+                <button class="text-sm tracking-wide font-semibold px-6 py-2 bg-sky-500 text-white rounded ">Update
                     Password</button>
             </div>
         </form>

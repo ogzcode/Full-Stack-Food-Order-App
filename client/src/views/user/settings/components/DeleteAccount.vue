@@ -1,7 +1,7 @@
 <template>
     <div class="bg-white p-8 shadow rounded-lg mb-8">
-        <h2 class="text-slate-700 text-xl font-medium tracking-wide mb-4">Delete Account</h2>
-        <p class="text-slate-600 font-light text-sm mb-4">
+        <h2 class="text-slate-800 text-xl font-medium tracking-wide mb-4">Delete Account</h2>
+        <p class="text-slate-700 font-normal text-sm mb-4">
             Are you sure you want to delete your account?
             This action cannot be undone.
             All your data, including profile information, posts,

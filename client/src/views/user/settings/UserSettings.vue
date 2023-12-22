@@ -14,39 +14,6 @@
 import UserDetails from './components/UserDetails.vue';
 import ChangePassword from './components/ChangePassword.vue';
 import DeleteAccount from './components/DeleteAccount.vue';
-
-/* const auhtStore = useAuth();
-const toastStore = useToastStore();
-
-const name = ref(auhtStore.user.name);
-const email = ref(auhtStore.user.email);
-const oldPassword = ref('');
-const newPassword = ref('');
-const phone = ref(auhtStore.user.phone);
-const address = ref(auhtStore.user.address);
-
-
-const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const data = {
-        name: name.value || auhtStore.user.name,
-        email: email.value || auhtStore.user.email,
-        oldPassword: oldPassword.value,
-        newPassword: newPassword.value,
-        phone: phone.value || auhtStore.user.phone,
-        address: address.value,
-    };
-
-    auhtStore.updateUserDetails(data);
-};
-
-watch(() => auhtStore.error, (error) => {
-    if (error) {
-        toastStore.showToast('error', error);
-    }
-})
- */
 </script>
 
 <style scoped></style>
