@@ -33,7 +33,9 @@ export default class User {
             select: {
                 id: true,
                 email: true,
-                name: true,
+                username: true,
+                firstName: true,
+                lastName: true,
                 role: true,
                 orderCount: true,
                 createdAt: true,
@@ -101,18 +103,14 @@ export default class User {
         return user
     }
 
-    //Kaldırılabilir
-    static async updateUserById(id, name, email, newPassword, phone, address) {
+    static async updateUserById(id, username, email, firstName, lastName, phone, address) {
         const updateData = {
-            name,
+            username,
+            firstName,
+            lastName,
             email,
             phone,
             address,
-        }
-
-        if (newPassword) {
-            const hashPassword = await bcrypt.hash(newPassword, 10);
-            updateData.password = hashPassword
         }
 
         return await prisma.user.update({
@@ -123,10 +121,9 @@ export default class User {
             select: {
                 id: true,
                 email: true,
-                name: true,
-                role: true,
-                orderCount: true,
-                createdAt: true,
+                firstName: true,
+                lastName: true,
+                username: true,
                 phone: true,
                 address: true,
             }

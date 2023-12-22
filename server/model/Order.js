@@ -90,7 +90,7 @@ class Order {
                 user: {
                     select: {
                         id: true,
-                        name: true,
+                        username: true,
                         address: true,
                         phone: true,
                     },

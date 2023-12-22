@@ -66,10 +66,9 @@ export const deleteAccount = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
-    const { name, email, oldPassword, newPassword, phone, address } = req.body;
+    const { username, firstName, lastName, email, phone, address } = req.body;
     try {
-        const user = await User.checkPassword(req.user.id, oldPassword);
-        const updatedUser = await User.updateUserById(req.user.id, name, email, newPassword, phone, address);
+        const updatedUser = await User.updateUserById(req.user.id, username, email, firstName, lastName, phone, address);
 
         res.status(200).json({ message: "User updated successfully.", user: updatedUser });
     }
@@ -93,6 +92,23 @@ export const changePassword = async (req, res) => {
         res.status(200).json({ message: "Password updated successfully." });
     }
     catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+export const getUserDetails = async (req, res) => {
+    try {
+        const user = await User.findUserById(req.user.id);
+        res.status(200).json({ user: {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            username: user.username,
+            email: user.email,
+            phone: user.phone,
+            address: user.address,
+        } });
+    } catch (error) {
         res.status(400).json({ error: error.message });
     }
 }
