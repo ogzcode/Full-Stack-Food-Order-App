@@ -1,6 +1,6 @@
 <template>
     <div class="relative inline-block">
-        <button @click="$emit('click')"
+        <button @click="handleClick"
             class="border rounded-full w-9 h-9 inline-flex justify-center items-center mr-2" :class="getStyleWithSeverity()"
             @mouseover="tooltipHover(true)" @mouseout="tooltipHover(false)">
             <Icons :name="props.iconName" :size="props.iconSize" :style="props.iconStyle" />
@@ -42,6 +42,8 @@ const props = defineProps({
     }
 });
 
+const emits = defineEmits(["click"]);
+
 const getStyleWithSeverity = () => {
     switch (props.severity) {
         case "emerald":
@@ -74,6 +76,10 @@ const getStyleWithSeverity = () => {
 
 const tooltipHover = (value) => {
     showTooltip.value = value
+}
+
+const handleClick = () => {
+    emits("click");
 }
 </script>
   
