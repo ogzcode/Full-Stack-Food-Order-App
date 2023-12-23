@@ -1,4 +1,13 @@
 import Product from "../model/Product.js";
+import Comment from "../model/Comment.js";
+import Favorities from "../model/Favorities.js";
+
+const calculateProductRatings = async (products) => {
+    for (let product of products) {
+        const average = await Comment.getRatingByProductId(product.id);
+        product.rating = average._avg.rating || 0;
+    }
+}
 
 export const createAndUpdateProduct = async (req, res) => {
     const { name, price, description, id } = req.body;
@@ -27,7 +36,51 @@ export const getAllProducts = async (req, res) => {
     try {
         const products = await Product.getAll();
 
+        await calculateProductRatings(products);
+
         res.status(200).json({ products });
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+}
+
+export const getProductForUser = async (req, res) => {
+    try {
+        const products = await Product.getAll();
+
+        const favorities = await Favorities.getAll(req.user.id);
+
+        for (let favority of favorities) {
+            const product = products.find(product => product.id === favority.productId);
+
+            product.isFavority = true;
+        }
+
+        await calculateProductRatings(products);
+
+        res.status(200).json({ products });
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+}
+
+export const setProductFavority = async (req, res) => {
+    const { productId } = req.body;
+
+    try {
+        const favority = await Favorities.getFavority(req.user.id, productId);
+        const product = await Product.getProductById(productId);
+
+        if (favority.length > 0) {
+            await Favorities.deleteFavority(favority[0].id);
+        }
+        else {
+            await Favorities.createFavority(productId, req.user.id);
+            product.isFavority = true;
+            await calculateProductRatings([product]);
+        }
+
+        res.status(200).json({ message: "Favority set successfully.", product });
     } catch (error) {
         res.status(404).json({ error: error.message });
     }

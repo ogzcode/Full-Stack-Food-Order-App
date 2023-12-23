@@ -23,6 +23,7 @@ model User {
   address    String    @default("")
   orders     Order[]
   comments   Comment[]
+  favorities Favorities[]
   createdAt  DateTime  @default(now())
 }
 
@@ -35,6 +36,7 @@ model Product {
   createdAt   DateTime  @default(now())
   orders      Order[]
   comments    Comment[]
+  favorities  Favorities[]
 }
 
 model Order {
@@ -63,6 +65,15 @@ model Comment {
   userId    Int
   content   String
   rating    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Favorities {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  userId    Int
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
