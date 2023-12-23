@@ -2,7 +2,7 @@
     <template v-if="!commentStatus">
         <CommentForm :product-id="productId" @close-dialog="$emit('closeDialog')" />
     </template>
-    <div class="max-h-[440px] w-[600px] overflow-y-auto order-scroll pr-2">
+    <div class="max-h-[440px] sm:w-[600px] w-full overflow-y-auto order-scroll pr-2">
         <template v-if="comments.length > 0" v-for="(comment, i) in comments" :key="i">
             <div class="bg-zinc-50 border border-zinc-400 p-4 rounded-md mb-4 relative">
                 <div class="pb-4 mb-4 flex justify-between items-center border-b border-zinc-200">

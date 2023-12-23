@@ -1,7 +1,7 @@
 <template>
     <div>
         <label v-if="props.label">{{ props.label }}</label>
-        <select v-model="model" class="border border-slate-300 rounded p-2 outline-0 text-slate-600 ml-2 text-sm">
+        <select v-model="model" class="border border-slate-400 rounded p-2 outline-0 text-slate-600 ml-2 text-sm">
             <option v-for="option in props.options" :key="option.value" :value="option.value">{{ option.label }}</option>
         </select>
     </div>
@@ -39,4 +39,15 @@ const model = computed({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+select {
+    padding-right: 1.5em;
+    padding-left: 0.75em;
+    background-color: #fff;
+}
+
+option {
+    background-color: #fff;
+}
+
+</style>
