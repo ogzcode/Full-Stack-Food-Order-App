@@ -8,9 +8,6 @@ export const createComment = async (req, res) => {
     const userDetails = req.user
     const { comment, rating, productId } = req.body
 
-    const user = await User.findUserById(userDetails.id)
-
-
     const newComment = {
         content: comment,
         rating,
@@ -41,7 +38,7 @@ export const getComments = async (req, res) => {
     }
 
     const products = await Order.getProductInOrderByUserId(userDetails.id, parseInt(productId))
-    
+
     if (products.length === 0) {
         userCommentStatus = true
     }
@@ -50,7 +47,7 @@ export const getComments = async (req, res) => {
         comments,
         userCommentStatus
     })
-} 
+}
 
 export const deleteAllComments = async (req, res) => {
     await Comment.deleteAllComments()
@@ -58,4 +55,22 @@ export const deleteAllComments = async (req, res) => {
     res.status(200).json({
         message: "All comments deleted successfully"
     })
+}
+
+export const deleteCommentById = async (req, res) => {
+    const { commentId } = req.params
+
+    try {
+        await Comment.deleteCommentById(parseInt(commentId))
+
+        res.status(200).json({
+            message: "Comment deleted successfully"
+        })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(400).json({
+            error: error.message
+        })
+    }
 }

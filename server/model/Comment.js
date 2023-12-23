@@ -13,13 +13,14 @@ class Comment {
                 productId
             },
             select: {
+                id: true,
                 content: true,
                 rating: true,
                 createdAt: true,
                 user: {
                     select: {
                         id: true,
-                        name: true,
+                        username: true,
                     },
                 },
             }
@@ -38,7 +39,7 @@ class Comment {
                 user: {
                     select: {
                         id: true,
-                        name: true,
+                        username: true,
                     },
                 },
             }
@@ -47,6 +48,25 @@ class Comment {
 
     static async deleteAllComments() {
         return await prisma.comment.deleteMany({})
+    }
+
+    static async deleteCommentById(commentId) {
+        return await prisma.comment.delete({
+            where: {
+                id: commentId
+            }
+        })
+    }
+
+    static getRatingByProductId(productId) {
+        return prisma.comment.aggregate({
+            where: {
+                productId
+            },
+            _avg: {
+                rating: true
+            }
+        })
     }
 }
 
