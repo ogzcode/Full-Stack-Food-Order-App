@@ -1,8 +1,8 @@
 <template>
     <div class="mb-8 pr-2">
         <div class="mb-4">
-            <label class="text-xs text-slate-500">Comment</label>
-            <textarea v-model="comment" class="border border-slate-200 rounded w-full p-2 outline-0 text-slate-800"
+            <label class="text-sm mb-1 block text-slate-500">Comment</label>
+            <textarea v-model="comment" class="border border-slate-400 rounded-lg w-full p-2 outline-0 text-zinc-700 focus:border-orange-400"
                 rows="5"></textarea>
         </div>
         <div class="flex justify-between items-center">
@@ -19,15 +19,15 @@
                 </template>
             </div>
             <button @click="handleSubmitComment"
-                class="px-8 py-1 text-white shadow-lg shadow-orange-200 bg-orange-600 rounded">Send</button>
+                class="px-8 py-1 text-white bg-orange-600 rounded">Send</button>
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useToastStore } from '../../../stores/toast';
-import { createComment } from "../../../services/request/CommentRequest.js"
+import { useToastStore } from '../../../../stores/toast';
+import { createComment } from "../../../../services/request/CommentRequest.js"
 
 const toastStore = useToastStore()
 
@@ -57,10 +57,12 @@ const handleSubmitComment = () => {
         .then(() => {
             comment.value = ''
             selectedStar.value = 0
-            emits('closeDialog', false)
+            emits('closeDialog')
             toastStore.showToast('success', 'Comment added successfully')
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            toastStore.showToast('error', err.message)
+        })
 }
 
 const getStarColor = computed(() => (index) => {
@@ -68,4 +70,8 @@ const getStarColor = computed(() => (index) => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+textarea:focus {
+    outline: 2px solid #fed7aa;
+}
+</style>
