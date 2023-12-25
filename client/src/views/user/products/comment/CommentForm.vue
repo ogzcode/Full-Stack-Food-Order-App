@@ -2,7 +2,8 @@
     <div class="mb-8 pr-2">
         <div class="mb-4">
             <label class="text-sm mb-1 block text-slate-500">Comment</label>
-            <textarea v-model="comment" class="border border-slate-400 rounded-lg w-full p-2 outline-0 text-zinc-700 focus:border-orange-400"
+            <textarea v-model="comment"
+                class="border border-slate-400 rounded-lg w-full p-2 outline-0 text-zinc-700 focus:border-orange-400"
                 rows="5"></textarea>
         </div>
         <div class="flex justify-between items-center">
@@ -18,16 +19,15 @@
                     </button>
                 </template>
             </div>
-            <button @click="handleSubmitComment"
-                class="px-8 py-1 text-white bg-orange-600 rounded">Send</button>
+            <button @click="handleSubmitComment" class="px-8 py-1 text-white bg-orange-600 rounded">Send</button>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useToastStore } from '../../../../stores/toast';
-import { createComment } from "../../../../services/request/CommentRequest.js"
+import { createComment, updateComment } from "../../../../services/request/CommentRequest.js"
 
 const toastStore = useToastStore()
 
@@ -38,8 +38,18 @@ const props = defineProps({
     productId: {
         type: Number,
         required: true
+    },
+    selectedComment: {
+        type: Object
     }
 })
+
+onMounted(() => {
+    if (props.selectedComment) {
+        comment.value = props.selectedComment.content
+        selectedStar.value = props.selectedComment.rating
+    }
+});
 
 const emits = defineEmits(['closeDialog'])
 
@@ -53,6 +63,24 @@ const handleSubmitComment = () => {
         comment: comment.value,
         rating: selectedStar.value
     }
+
+    if (props.selectedComment) {
+        updateComment(props.selectedComment.id, {
+            comment: comment.value,
+            rating: selectedStar.value
+        })
+            .then(() => {
+                comment.value = ''
+                selectedStar.value = 0
+                emits('closeDialog')
+                toastStore.showToast('success', 'Comment updated successfully')
+            })
+            .catch(err => {
+                toastStore.showToast('error', err.message)
+            })
+        return
+    }
+
     createComment(reqData)
         .then(() => {
             comment.value = ''

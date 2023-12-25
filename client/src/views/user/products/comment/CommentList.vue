@@ -1,6 +1,6 @@
 <template>
     <template v-if="!commentStatus">
-        <CommentForm :product-id="productId" @close-dialog="$emit('closeDialog')" />
+        <CommentForm :selected-comment="selectedComment" :product-id="productId" @close-dialog="$emit('closeDialog')" />
     </template>
     <div class="max-h-[440px] sm:w-[600px] w-full overflow-y-auto order-scroll pr-2">
         <template v-if="comments.length > 0" v-for="(comment, i) in comments" :key="i">
@@ -11,9 +11,8 @@
                     <div v-if="isUserComment(comment)">
                         <IconBtn @click="handleDeleteComment(comment.id)" severity="red" iconName="trash-fill"
                             iconStyle="fill-red-500" :iconSize="16" btnStyle="w-18 h-18" />
-                        <IconBtn severity="indigo" iconName="pencil-fill" iconStyle="fill-indigo-500" :iconSize="16"
-                            btnStyle="w-18 h-18" />
-
+                        <IconBtn @click="handleUpdateComment(comment)" severity="indigo" iconName="pencil-fill"
+                            iconStyle="fill-indigo-500" :iconSize="16" btnStyle="w-18 h-18" />
                     </div>
                 </div>
                 <p class="text-sm font-medium text-zinc-700">
@@ -41,6 +40,7 @@ const toastStore = useToastStore();
 
 const comments = ref([]);
 const commentStatus = ref(true);
+const selectedComment = ref(null);
 
 const props = defineProps({
     productId: {
@@ -72,6 +72,12 @@ const handleDeleteComment = (commentId) => {
             toastStore.showToast('error', err.message);
         })
 }
+
+const handleUpdateComment = (comment) => {
+    selectedComment.value = comment;
+    commentStatus.value = false;
+}
+
 </script>
 
 <style></style>
