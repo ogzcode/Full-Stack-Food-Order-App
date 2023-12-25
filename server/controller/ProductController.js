@@ -77,8 +77,8 @@ export const setProductFavority = async (req, res) => {
         else {
             await Favorities.createFavority(productId, req.user.id);
             product.isFavority = true;
-            await calculateProductRatings([product]);
         }
+        await calculateProductRatings([product]);
 
         res.status(200).json({ message: "Favority set successfully.", product });
     } catch (error) {
