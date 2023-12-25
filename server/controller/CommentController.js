@@ -1,8 +1,5 @@
 import Comment from "../model/Comment.js";
-import User from "../model/User.js";
-import Product from "../model/Product.js";
 import Order from "../model/Order.js";
-import OrderDetail from "../model/OrderDetail.js";
 
 export const createComment = async (req, res) => {
     const userDetails = req.user
@@ -65,6 +62,30 @@ export const deleteCommentById = async (req, res) => {
 
         res.status(200).json({
             message: "Comment deleted successfully"
+        })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(400).json({
+            error: error.message
+        })
+    }
+}
+
+export const updateCommentById = async (req, res) => {
+    const { commentId } = req.params
+    const { comment, rating } = req.body
+
+    const updatedComment = {
+        content: comment,
+        rating
+    }
+
+    try {
+        await Comment.updateCommentById(parseInt(commentId), updatedComment)
+
+        res.status(200).json({
+            message: "Comment updated successfully"
         })
     }
     catch (error) {

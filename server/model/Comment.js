@@ -68,6 +68,15 @@ class Comment {
             }
         })
     }
+
+    static async updateCommentById(commentId, comment) {
+        return await prisma.comment.update({
+            where: {
+                id: commentId
+            },
+            data: comment
+        })
+    }
 }
 
 export default Comment
