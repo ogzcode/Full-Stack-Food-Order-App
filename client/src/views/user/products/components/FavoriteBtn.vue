@@ -1,7 +1,7 @@
 <template>
     <div class="absolute right-2 top-2 flex items-center">
-        <button class=" rounded-full p-3 bg-slate-100">
-            <template v-if="true">
+        <button class=" rounded-full p-3 bg-slate-100" @click="handleChangeFavority()">
+            <template v-if="!isFavorities">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-heart fill-slate-700"
                     viewBox="0 0 16 16">
                     <path
@@ -19,7 +19,35 @@
 </template>
 
 <script setup>
+import { useProductStore } from "../../../../stores/product.js";
+import { setProductFavority } from "../../../../services/request/ProductRequest";
 
+const productStore = useProductStore();
+
+const props = defineProps({
+    isFavorities: {
+        type: Boolean,
+        required: true
+    },
+    productId: {
+        type: Number,
+        required: true
+    }
+});
+
+const handleChangeFavority = () => {
+    setProductFavority(props.productId).then((res) => {
+        productStore.updateProduct(res.data.product);
+    });
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+button {
+    transition: all 0.3s ease-in-out;
+}
+
+button:active {
+    transform: scale(0.9);
+}
+</style>

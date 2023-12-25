@@ -15,3 +15,11 @@ export const createAndUpdateProduct = async (productData) => {
 export const deleteProductById = async (id) => {
     return await request.delete(`/product/delete/${id}`);
 }
+
+export const getProductForUser = async () => {
+    return await request.get('/product/user');
+}
+
+export const setProductFavority = async (productId) => {
+    return await request.post('/product/setFavority', { productId });
+}
