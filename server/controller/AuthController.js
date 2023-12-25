@@ -1,5 +1,6 @@
 import User from '../model/User.js'
 import jwt from 'jsonwebtoken'
+import { getUserExtraData } from '../utils/util.js'
 
 export const register = async (req, res) => {
     const { email, username, password } = req.body
@@ -33,6 +34,7 @@ export const login = async (req, res) => {
                 email: user.email,
                 username: user.username,
                 role: user.role,
+                userHasExtraData: getUserExtraData(user),
             }
         })
     } catch (error) {
@@ -45,12 +47,14 @@ export const checkAuth = async (req, res) => {
     const token = req.user
     try {
         const user = await User.findUserById(token.id)
+
         res.status(200).json({
             user: {
                 id: user.id,
                 email: user.email,
                 name: user.name,
                 role: user.role,
+                userHasExtraData: getUserExtraData(user),
             }
         })
     } catch (error) {

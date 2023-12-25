@@ -1,4 +1,5 @@
 import User from "../model/User.js";
+import { getUserExtraData } from "../utils/util.js";
 
 export const deleteAllUsers = async (req, res) => {
     try {
@@ -70,7 +71,15 @@ export const updateUser = async (req, res) => {
     try {
         const updatedUser = await User.updateUserById(req.user.id, username, email, firstName, lastName, phone, address);
 
-        res.status(200).json({ message: "User updated successfully.", user: updatedUser });
+        res.status(200).json({ 
+            message: "User updated successfully.", 
+            user: {
+                id: updatedUser.id,
+                email: updatedUser.email,
+                name: updatedUser.name,
+                role: updatedUser.role,
+                userHasExtraData: getUserExtraData(updatedUser),
+            } });
     }
     catch (error) {
         res.status(400).json({ error: error.message });

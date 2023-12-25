@@ -64,10 +64,12 @@
 import { onMounted, ref } from 'vue';
 import { getUserDetails } from '../../../../services/request/UserRequest';
 import { useToastStore } from '../../../../stores/toast';
+import { useAuth } from '../../../../stores/auth';
 
 import FormInput from '../../../auth/components/FormInput.vue';
 import { updateUser } from '../../../../services/request/UserRequest';
 
+const authStore = useAuth();
 const toastStore = useToastStore();
 
 const username = ref('');
@@ -105,6 +107,8 @@ const handleSubmit = () => {
     })
         .then((res) => {
             toastStore.showToast("success", "User details updated successfully");
+            console.log(res.data);
+            authStore.updateUser(res.data.user);
         })
         .catch((err) => {
             toastStore.showToast("error", "Unable to update user details");

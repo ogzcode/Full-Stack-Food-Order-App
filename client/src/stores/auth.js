@@ -3,25 +3,19 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TokenManager from '../services/tokenServices'
 import { Login, Register, CheckAuth } from "../services/request/AuthRequest"
-import { deleteAccount, updateUser } from "../services/request/UserRequest"
+import { deleteAccount } from "../services/request/UserRequest"
 
 export const useAuth = defineStore('auth', () => {
     const router = useRouter()
     const user = ref(null)
     const isAuthenticated = ref(false)
     const error = ref(null)
-    const loading = ref(false)
 
     const clearError = () => {
         error.value = null
     }
 
-    const setLoading = (value) => {
-        loading.value = value
-    }
-
     const login = ({ email, password }) => {
-        setLoading(true);
         Login({ email, password })
             .then((response) => {
                 TokenManager.saveToken(response.data.token)
@@ -37,9 +31,6 @@ export const useAuth = defineStore('auth', () => {
             })
             .catch((err) => {
                 error.value = err.response?.data.error
-            })
-            .finally(() => {
-                setLoading(false)
             })
     }
 
@@ -82,6 +73,10 @@ export const useAuth = defineStore('auth', () => {
         }
     }
 
+    const updateUser = (newUser) => {
+        user.value = newUser
+    }
+
     const deleteAccountByUser = (password) => {
         deleteAccount(password)
             .then((response) => {
@@ -92,29 +87,16 @@ export const useAuth = defineStore('auth', () => {
             })
     }
 
-    //Değiştirilecek
-    const updateUserDetails = ({ name, email, oldPassword, newPassword, phone, address }) => {
-        updateUser({ name, email, oldPassword, newPassword, phone, address })
-            .then((response) => {
-                user.value = response.data.user
-            })
-            .catch((err) => {
-                error.value = err.response.data.error
-            })
-    }
-
     return {
         user,
         isAuthenticated,
-        loading,
         error,
         checkAuth,
         login,
         logout,
         signup,
         clearError,
-        setLoading,
         deleteAccountByUser,
-        updateUserDetails
+        updateUser
     }
 })

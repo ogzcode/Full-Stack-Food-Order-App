@@ -117,16 +117,7 @@ export default class User {
             where: {
                 id
             },
-            data: updateData,
-            select: {
-                id: true,
-                email: true,
-                firstName: true,
-                lastName: true,
-                username: true,
-                phone: true,
-                address: true,
-            }
+            data: updateData
         })
     }
 
