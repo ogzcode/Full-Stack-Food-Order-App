@@ -53,4 +53,11 @@
         justify-content: center;
     }
 }
+
+@media screen and (max-width: 480px) {
+    .auth-box svg {
+        width: 36px;
+        height: 36px;
+    }
+}
 </style>

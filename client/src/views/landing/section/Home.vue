@@ -4,7 +4,7 @@
         <div class="flex md:justify-center items-center md:flex-row flex-col-reverse xl:px-40 md:px-20 main">
             <div class="flex-1 text-side md:text-left text-center">
                 <h1 class="font-bold tracking-wide text-white mb-4 xl:text-4xl md:text-2xl text-xl xl:w-1/2">Delicious Dishes for Food Lovers</h1>
-                <p class="text-slate-50 xl:w-3/4 md:w-2/3 w-1/2 md:mx-0 mx-auto lg:text-base text-sm font-light tracking-wide">
+                <p class="text-slate-50 xl:w-3/4 md:w-2/3 sm:w-1/2 md:mx-0 sm:px-0 px-8 mx-auto lg:text-base text-sm font-light tracking-wide">
                     At Food-ER, we believe that everyone deserves to enjoy delicious food, no matter where they are. That's
                     why we offer a wide variety of restaurants to choose from, all delivered right to your door.
                 </p>
@@ -19,7 +19,7 @@
                 </a>
             </div>
             <div class="flex-1 flex justify-center relative">
-                <img :src="homePage" alt="Home Page" class="w-4/5 rounded-lg z-10" />
+                <img :src="homePage" alt="Home Page" class="sm:w-4/5 w-3/5 rounded-lg z-10" />
                 <span class="absolute rounded-full bg-yellow-900 image-shadow"></span>
             </div>
         </div>

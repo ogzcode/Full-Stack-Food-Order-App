@@ -2,10 +2,9 @@
     <div class="md:py-20 py-10" id="services">
         <div class="flex flex-col items-center mb-16">
             <h1 class="font-bold text-3xl text-slate-800 mb-4 tracking-wide">Our Services</h1>
-            <p class="lg:w-1/3 sm:w-2/3 text-center text-slate-800 tracking-wide font-light">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Praesent ut cursus quam. Suspendisse potenti.
-                Vestibulum dapibus sagittis enim ut scelerisque.
+            <p class="lg:w-1/3 sm:w-2/3 sm:text-base text-sm sm:px-0 px-4 text-center text-slate-800 tracking-wide font-light">
+                If you enjoy eating delicious food and having a pleasant dining experience with your loved ones, you are at
+                the right place. We bring you the fastest and most delicious meals.
             </p>
         </div>
         <div class="flex justify-around flex-wrap mx-20 gap-8">

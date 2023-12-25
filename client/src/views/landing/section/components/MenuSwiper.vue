@@ -1,5 +1,5 @@
 <template>
-    <div class="px-20 relative">
+    <div class="sm:px-20 px-10 relative">
             <swiper class="overflow-auto" :modules="modules" :slides-per-view="1" :space-between="50" @swiper="onSwiper"
                 @slide-change="onSlideChange" :pagination="{ clickable: true }" :breakpoints="{
                     '1024': {
