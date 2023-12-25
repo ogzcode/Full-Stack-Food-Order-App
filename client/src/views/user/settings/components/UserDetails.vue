@@ -107,7 +107,6 @@ const handleSubmit = () => {
     })
         .then((res) => {
             toastStore.showToast("success", "User details updated successfully");
-            console.log(res.data);
             authStore.updateUser(res.data.user);
         })
         .catch((err) => {

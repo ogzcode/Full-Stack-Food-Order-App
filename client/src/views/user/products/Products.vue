@@ -1,25 +1,17 @@
 <template>
-    <div class="p-12">
-        <Header :value="searchQuery" v-model:value="searchQuery" />
+    <div class="sm:p-12 p-6">
+        <SettingErrorMessage />
+        <Header :value="searchQuery" v-model:value="searchQuery" :filter-selected="filter"
+            v-model:filterSelected="filter" />
         <div class="pt-12 flex gap-12 flex-wrap justify-around">
-            <template v-for="(product, i) in productStore.searchProduct(searchQuery)" :key="i">
+            <template v-for="(product, i) in filteredProducts" :key="i">
                 <ProductCard :product="product">
                     <template #footer>
                         <div class="flex justify-between items-center">
-                            <button @click="handleProductComment(product.id)" class="flex items-center gap-1">
-                                <template v-for="(star, i) in 5" :key="i">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                        class="bi bi-star-fill" :class="getRatingColor(product.rating, i)"
-                                        viewBox="0 0 16 16">
-                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927
-                                            0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522
-                                            3.356.83 4.73c.078.443-.36.79-.746.592L8
-                                            13.187l-4.389
-                                            2.256z" />
-                                    </svg>
-                                </template>
-                            </button>
-                            <CartBtn @add-to-cart="handleAddToCart(product)"
+                            <CommentDialogBtn :product-rating="product.rating"
+                                @on-open-comment-dialog="handleProductComment(product.id)" />
+
+                            <CartBtn v-if="auth.user.userHasExtraData" @add-to-cart="handleAddToCart(product)"
                                 @remove-to-cart="handleDeleteToChart(product.id)"
                                 :order-quantity="getOrderQuantity(product.id)" />
                         </div>
@@ -36,25 +28,30 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { getAllProducts } from "../../../services/request/ProductRequest.js"
+import { computed, onMounted, ref } from 'vue';
+import { getProductForUser } from "../../../services/request/ProductRequest.js"
 import { useProductStore } from '../../../stores/product';
 import { useOrderStore } from '../../../stores/order';
+import { useAuth } from '../../../stores/auth';
 import Dialog from '../../../components/Dialog.vue';
 import CommentList from './comment/CommentList.vue';
 import ProductCard from "./components/ProductCard.vue"
 import Header from './components/Header.vue';
 import CartBtn from './components/CartBtn.vue';
+import SettingErrorMessage from './components/SettingErrorMessage.vue';
+import CommentDialogBtn from './components/CommentDialogBtn.vue';
 
 const orderStore = useOrderStore();
 const productStore = useProductStore();
+const auth = useAuth();
 
 const searchQuery = ref('');
 const commentDialog = ref(false);
 const selectedProductId = ref(0);
+const filter = ref('all');
 
 onMounted(() => {
-    getAllProducts().then((res) => {
+    getProductForUser().then((res) => {
         productStore.setProducts(res.data.products);
     });
 });
@@ -75,7 +72,7 @@ const handleCommentDialog = (value, refetch = false) => {
     commentDialog.value = value;
 
     if (refetch) {
-        getAllProducts().then((res) => {
+        getProductForUser().then((res) => {
             productStore.setProducts(res.data.products);
         });
     }
@@ -86,9 +83,9 @@ const handleProductComment = (productId) => {
     commentDialog.value = true;
 }
 
-const getRatingColor = (rating, index) => {
-    return index < rating ? 'text-orange-500' : 'text-slate-300';
-}
+const filteredProducts = computed(() => {
+    return productStore.searchProduct(searchQuery.value, filter.value);
+});
 
 </script>
 

@@ -1,6 +1,6 @@
 <template>
-    <div class="w-[400px] flex justify-between flex-col border rounded-xl relative transition hover:border-orange-500">
-        <FavoriteBtn />
+    <div class="sm:w-[400px] flex justify-between flex-col border rounded-xl relative transition hover:border-orange-500">
+        <FavoriteBtn :is-favorities="product?.isFavority ? true : false" :product-id="product.id" />
         <div class="p-4">
             <img :src="getImgURL(product.image)" class="" />
         </div>
