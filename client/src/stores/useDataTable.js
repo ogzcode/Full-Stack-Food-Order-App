@@ -37,6 +37,12 @@ export const useDataTable = defineStore("data-table", () => {
         initData.value = data;
     }
 
+    const reset = () => {
+        realData.value = [];
+        headers.value = [];
+        initData.value = [];
+    }
+
     const setData = (data) => {
         realData.value = data;
     }
@@ -144,6 +150,7 @@ export const useDataTable = defineStore("data-table", () => {
         searchQuery,
         dataToDisplay,
         selectedItems,
+        reset,
         setSelectedItems,
         selectAll,
         searchItems,

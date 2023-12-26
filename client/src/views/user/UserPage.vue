@@ -48,17 +48,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useOrderStore } from '../../stores/order';
+import { ref, onUnmounted } from 'vue';
 import { useToastStore } from '../../stores/toast';
+import { useDataTable } from "../../stores/useDataTable"
+import { useOrderStore } from '../../stores/order';
+import { useProductStore } from '../../stores/product';
+
 import NavBar from './components/NavBar.vue';
 import Dialog from '../../components/Dialog.vue';
+
 import { createOrder } from "../../services/request/OrderRequest.js"
 
+
+const dataTableStore = useDataTable();
 const orderStore = useOrderStore();
+const productStore = useProductStore();
+const toastStore = useToastStore();
 
 const orderDialog = ref(false);
-const toastStore = useToastStore();
 
 const handleDialog = (value) => {
     orderDialog.value = value;
@@ -88,6 +95,12 @@ const handleSubmitOrder = () => {
             toastStore.showToast("error", "Order create failed.");
         })
 }
+
+onUnmounted(() => {
+    dataTableStore.reset();
+    orderStore.reset();
+    productStore.reset();
+});
 
 </script>
 

@@ -8,11 +8,15 @@ export const useOrderStore = defineStore("order", () => {
         orders.value = [...newOrders];
     };
 
+    const reset = () => {
+        orders.value = [];
+    };
+
     const getProductById = (id) => {
         return orders.value.find((order) => order.id === id);
     };
 
-    const addOrder = (newOrder) => {
+    const addProductToCart = (newOrder) => {
         const orderIndex = orders.value.findIndex((order) => order.id === newOrder.id);
 
         if (orderIndex !== -1) {
@@ -23,7 +27,7 @@ export const useOrderStore = defineStore("order", () => {
         }
     };
 
-    const deleteOrder = (id) => {
+    const deleteProductToCart = (id) => {
         const orderIndex = orders.value.findIndex((order) => order.id === id);
 
         if (orderIndex !== -1 && orders.value[orderIndex].quantity > 1) {
@@ -72,9 +76,10 @@ export const useOrderStore = defineStore("order", () => {
 
     return {
         orders,
+        reset,
         setOrders,
-        addOrder,
-        deleteOrder,
+        addProductToCart,
+        deleteProductToCart,
         searchOrder,
         updateOrder,
         productIsHere,
