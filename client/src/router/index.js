@@ -93,6 +93,14 @@ const router = createRouter({
           meta: {
             requiresAuth: true,
           },
+        },
+        {
+          path: "order",
+          name: "Order",
+          component: () => import("@/views/user/order/Order.vue"),
+          meta: {
+            requiresAuth: true,
+          },
         }
       ]
     },
