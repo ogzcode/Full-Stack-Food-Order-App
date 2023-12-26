@@ -1,6 +1,6 @@
 <template>
     <div v-if="!authStore.user?.userHasExtraData"
-        class="bg-red-50 border border-red-500 rounded mb-8 text-red-600 p-4 flex items-center gap-4">
+        class="bg-red-50 border border-red-500 rounded mb-12 text-red-600 p-4 flex items-center gap-4">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
             class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
             <path

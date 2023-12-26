@@ -1,6 +1,9 @@
 <template>
-  <RouterView />
-  <Toast />
+  <main class="min-h-screen">
+    <RouterView />
+    <Toast />
+  </main>
+  <Footer />
 </template>
 
 <script setup>
@@ -8,6 +11,7 @@ import { onMounted } from 'vue';
 import { RouterView } from 'vue-router';
 import { useAuth } from './stores/auth';
 import Toast from "./components/Toast.vue";
+import Footer from "./views/landing/section/Footer.vue";
 
 const authStore = useAuth();
 
@@ -16,6 +20,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

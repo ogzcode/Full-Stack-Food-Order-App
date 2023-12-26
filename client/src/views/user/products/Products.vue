@@ -18,6 +18,11 @@
                     </template>
                 </ProductCard>
             </template>
+            <template v-if="filteredProducts.length === 0">
+                <div class="text-center text-orange-600 py-8 rounded text-2xl font-semibold w-full bg-orange-100">
+                    No products found
+                </div>
+            </template>
         </div>
         <Dialog header-title="Comments" :show="commentDialog" @close="handleCommentDialog(false)" :footer-show="false">
             <template v-slot:body>
