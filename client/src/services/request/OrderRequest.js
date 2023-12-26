@@ -19,3 +19,7 @@ export const getOrderDetails = async (orderId) => {
 export const changeOrderStatus = async (orderData) => {
     return await request.put('/order/changeOrderStatus', orderData);
 }
+
+export const getPendingOrders = async () => {
+    return await request.get('/order/getPendingDataCount');
+}

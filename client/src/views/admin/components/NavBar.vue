@@ -18,7 +18,8 @@
                 class="border border-orange-600 text-orange-600 font-medium text-xs px-4 py-2 rounded-full tracking-wide relative">
                 Orders
                 <span
-                    class="absolute -top-2 -right-2 text-white bg-orange-600 rounded-full flex justify-center items-center text-xs w-6 h-6 ">2</span>
+                    class="absolute -top-2 -right-2 text-white bg-orange-600 rounded-full flex justify-center items-center text-xs w-6 h-6 ">{{
+                        orderCount }}</span>
             </div>
             <button @click="logout"
                 class="font-medium text-sm tracking-wide mx-8 px-6 py-2 rounded border border-red-600 text-red-600 flex items-center logout-btn">
@@ -35,11 +36,24 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useQuery } from "@tanstack/vue-query";
+
 import { useAuth } from "../../../stores/auth";
+
+import { getPendingOrders } from '../../../services/request/OrderRequest';
 
 const $route = useRoute();
 const authStore = useAuth();
+
+const { data: queryData } = useQuery({
+    queryKey: ["pendingOrders"],
+    queryFn: getPendingOrders,
+    refetchInterval: 30000,
+})
+
+const orderCount = ref(0);
 
 const isRouteActive = (routeName) => {
     return routeName === $route.name ? "text-orange-600" : "text-slate-800";
@@ -48,6 +62,14 @@ const isRouteActive = (routeName) => {
 const logout = () => {
     authStore.logout();
 }
+
+watch(queryData, (newData, oldData) => {
+    const inner = newData?.data?.pendingOrderCount;
+
+    if (inner) {
+        orderCount.value = inner;
+    }
+});
 
 </script>
 
