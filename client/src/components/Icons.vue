@@ -21,11 +21,40 @@
         </svg>
     </template>
     <template v-else-if="name === 'pencil-fill'">
-        <svg xmlns="http://www.w3.org/2000/svg" :width="props.size" :height="props.size" fill="currentColor" class="bi bi-pencil-fill"
-            :class="props.style"
-            viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" :width="props.size" :height="props.size" fill="currentColor"
+            class="bi bi-pencil-fill" :class="props.style" viewBox="0 0 16 16">
             <path
                 d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+        </svg>
+    </template>
+    <template v-else-if="name === 'x'">
+        <svg xmlns="http://www.w3.org/2000/svg" :width="props.size" :height="props.size" fill="currentColor" class="bi bi-x"
+            :class="props.style" viewBox="0 0 16 16">
+            <path
+                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+        </svg>
+    </template>
+    <template v-else-if="name === 'check2'">
+        <svg xmlns="http://www.w3.org/2000/svg" :width="props.size" :height="props.size" class="bi bi-check2"
+            :class="props.style" viewBox="0 0 16 16">
+            <path
+                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+        </svg>
+    </template>
+    <template v-else-if="name === 'bag-plus'">
+        <svg xmlns="http://www.w3.org/2000/svg" :width="props.size" :height="props.size" fill="currentColor"
+            class="bi bi-bag-plus" :class="props.style" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5" />
+            <path
+                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+        </svg>
+    </template>
+    <template v-else-if=" name === 'exclamation-circle-fill'">
+        <svg xmlns="http://www.w3.org/2000/svg" :width="props.size" :height="props.size" class="bi bi-exclamation-circle-fill" :class="props.style"
+            viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
         </svg>
     </template>
 </template>
