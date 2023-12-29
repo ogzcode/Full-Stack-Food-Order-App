@@ -39,11 +39,13 @@ model Product {
   favorities  Favorities[]
 }
 
+//Status: received, prepared, cargo, completed, cancelled
 model Order {
   id         Int            @id @default(autoincrement())
   orderNo    String         @unique @default(uuid())
   totalPrice String
-  status     String         @default("pending")
+  status     String         @default("received")
+  paymentType   String         @default("card")
   createdAt  DateTime       @default(now())
   userId     Int
   user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)

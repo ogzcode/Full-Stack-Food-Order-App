@@ -17,7 +17,7 @@ class Order {
         return await prisma.order.findMany({
             where: {
                 userId,
-                
+
             },
             select: {
                 id: true,
@@ -32,7 +32,7 @@ class Order {
         });
     }
 
-    static async getOrderById (id) {
+    static async getOrderById(id) {
         return await prisma.order.findUnique({
             where: {
                 id,
@@ -115,6 +115,35 @@ class Order {
             where: {
                 status: "pending",
             },
+        });
+    }
+
+    static async getPendingOrderByUserId(userId) {
+        return await prisma.order.findFirst({
+            where: {
+                userId,
+                status: {
+                    not: {
+                        in: ["completed", "cancelled"]
+                    }
+                }
+            },
+            select: {
+                id: true,
+                orderNo: true,
+                status: true,
+                totalPrice: true,
+                createdAt: true,
+                paymentType: true,
+                products: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                        image: true,
+                    },
+                },
+            }
         });
     }
 }

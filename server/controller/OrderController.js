@@ -119,11 +119,50 @@ export const getAllOrders = async (req, res) => {
 }
 
 export const getPendingDataCount = async (req, res) => {
-    const userDetail = req.user;
-
-    const user = await User.findUserById(userDetail.id);
-
     const pendingOrderCount = await Order.getPendingOrderCount();
 
     return res.status(200).json({ pendingOrderCount });
+}
+
+export const getUserPendingOrder = async (req, res) => {
+    try {
+        const userDetail = req.user;
+
+        const user = await User.findUserById(userDetail.id);
+
+        const order = await Order.getPendingOrderByUserId(user.id);
+
+        if (!order) {
+            return res.status(200).json({ message: "No pending order found.", order: null });
+        }
+
+        const orderDetails = await OrderDetail.getOrderDetailsByOrderId(order.id);
+
+        for (let orderDetail of orderDetails) {
+            let products = order.products.map((product) => {
+                if (product.id === orderDetail.productId) {
+                    return { ...product, quantity: orderDetail.quantity };
+                }
+                else {
+                    return product;
+                }
+            });
+
+            order.products = products;
+        }
+
+        return res.status(200).json({
+            message: "Pending order retrieved successfully.",
+            userDetails: {
+                userFullName: user.firstName + " " + user.lastName,
+                address: user.address,
+                phone: user.phone,
+                email: user.email,
+            },
+            order: order,
+        });
+    }
+    catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
 }
