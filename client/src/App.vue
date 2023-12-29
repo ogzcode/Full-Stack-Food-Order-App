@@ -3,7 +3,6 @@
     <RouterView />
     <Toast />
   </main>
-  <Footer />
 </template>
 
 <script setup>

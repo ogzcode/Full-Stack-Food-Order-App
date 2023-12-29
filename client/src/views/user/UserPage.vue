@@ -1,30 +1,32 @@
 <template>
-    <div>
+    <div class="min-h-screen">
         <NavBar @open-dialog="handleDialog" />
         <RouterView />
         <Dialog header-title="Order Details" :show="orderDialog" @close="handleDialog"
             :submit-is-disabled="!(orderStore.orders.length > 0)" submit-text="Order" submit-type="success"
             :on-submit="handleSubmitOrder">
             <template v-slot:body>
-                <div class="max-h-[400px] overflow-y-auto order-scroll pr-2">
+                <div class="max-h-[560px] w-[560px] overflow-y-auto order-scroll pr-2">
                     <template v-if="orderStore.orders.length > 0">
                         <div v-for="(product, i) in orderStore.orders" :key="i"
-                            class="border border-orange-500 rounded flex justify-between items-center mb-4">
+                            class="border border-orange-600 rounded flex justify-between items-center mb-4">
                             <div class="flex items-center gap-x-2 h-20">
                                 <img :src="getImgURL(product.image)" alt="" class="w-20" />
                                 <div>
-                                    <p class="text-slate-800 text-lg font-medium">{{ product.name }}</p>
-                                    <p class="text-slate-600 font-medium text-xs">X {{ product.quantity }}</p>
+                                    <p class="text-zinc-700 text-lg font-medium">{{ product.name }}</p>
+                                    <p class="text-zinc-600 font-medium text-sm flex items-center">
+                                        <Icon name="x" :size="16" />
+                                        {{ product.quantity }}
+                                    </p>
                                 </div>
                             </div>
-                            <p class="text-orange-500 text-xl font-medium mr-4">${{ parseInt(product.price) *
+                            <p class="text-orange-600 text-xl font-medium mr-4">${{ parseInt(product.price) *
                                 product.quantity }}</p>
                         </div>
-                        
+
                     </template>
                     <template v-else>
-                        <div
-                            class="flex w-full items-center bg-orange-50 border border-orange-200 p-2 text-orange-800 rounded">
+                        <div class="flex items-center bg-orange-50 border border-orange-200 p-2 text-orange-800 rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                 class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
                                 <path
@@ -35,16 +37,17 @@
                     </template>
                 </div>
                 <template v-if="orderStore.orders.length > 0">
-                    <div class="flex justify-between items-center bg-slate-100 rounded p-2 mr-2">
+                    <div class="flex justify-between items-center w-full bg-slate-100 rounded p-2">
                         <router-link :to="{ name: 'Settings' }"
                             class="underline text-xs text-orange-600 tracking-wide">Update contact information</router-link>
-                        <p class="text-right text-lg font-medium rounded tracking-wide text-orange-600">Total: ${{
+                        <p class="text-right text-lg font-bold rounded tracking-wide text-orange-600">Total: ${{
                             orderStore.getTotalPrice() }}</p>
                     </div>
                 </template>
             </template>
         </Dialog>
     </div>
+    <Footer />
 </template>
 
 <script setup>
@@ -56,6 +59,10 @@ import { useProductStore } from '../../stores/product';
 
 import NavBar from './components/NavBar.vue';
 import Dialog from '../../components/Dialog.vue';
+import Icon from "../../components/Icons.vue";
+import Footer from './components/Footer.vue';
+
+import { getImgURL } from "../../utils/util.js";
 
 import { createOrder } from "../../services/request/OrderRequest.js"
 
@@ -70,10 +77,6 @@ const orderDialog = ref(false);
 const handleDialog = (value) => {
     orderDialog.value = value;
 }
-
-const getImgURL = (image) => {
-    return "http://localhost:3000/public/docs/" + image;
-};
 
 const handleSubmitOrder = () => {
     const order = {
