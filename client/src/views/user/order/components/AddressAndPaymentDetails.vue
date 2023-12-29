@@ -4,16 +4,16 @@
             <h1 class="text-slate-700 font-semibold border-b border-zinc-300 p-4">Shipping Address</h1>
             <div>
                 <div class="px-4 py-2">
-                    <p class="text-slate-700 text-base font-semibold mb-px">OgzCode</p>
-                    <p class="text-sm text-slate-600 font-medium">2123 Parker st. Allentown, New Mexico 123456</p>
+                    <p class="text-slate-700 text-base font-semibold mb-px">{{ props.addressDetails.userFullName }}</p>
+                    <p class="text-sm text-slate-600 font-medium">{{ props.addressDetails.address }}</p>
                 </div>
                 <div class="px-4 py-2">
                     <p class="text-slate-700 text-base font-semibold mb-px">Email</p>
-                    <p class="text-sm text-slate-600 font-medium">ogz@mail.com</p>
+                    <p class="text-sm text-slate-600 font-medium">{{ props.addressDetails.email }}</p>
                 </div>
                 <div class="px-4 py-2">
                     <p class="text-slate-700 text-base font-semibold mb-px">Phone</p>
-                    <p class="text-sm text-slate-600 font-medium">+1 234 567 89 00</p>
+                    <p class="text-sm text-slate-600 font-medium">{{ props.addressDetails.phone }}</p>
                 </div>
             </div>
         </div>
@@ -21,8 +21,8 @@
             <h1 class="text-slate-700 font-semibold border-b border-zinc-300 p-4">Payment</h1>
             <div>
                 <div class="px-4 py-2 flex justify-between border-b border-zinc-300">
-                    <p class="text-slate-600 text-sm font-medium mb-px">Sub-Total</p>
-                    <p class="text-base text-slate-700 font-semibold">$200</p>
+                    <p class="text-slate-600 text-sm font-medium mb-px">Order No</p>
+                    <p class="text-base text-slate-700 font-semibold">{{ props.paymentDetails.orderNo }}</p>
                 </div>
                 <div class="px-4 py-2 flex justify-between border-b border-zinc-300">
                     <p class="text-slate-600 text-sm font-medium mb-px">Shipping</p>
@@ -30,11 +30,11 @@
                 </div>
                 <div class="px-4 py-2 flex justify-between">
                     <p class="text-slate-600 text-sm font-medium mb-px">Payment Type</p>
-                    <p class="text-base text-slate-700 font-semibold">Card</p>
+                    <p class="text-base text-slate-700 font-semibold">{{ props.paymentDetails.paymentType.toUpperCase() }}</p>
                 </div>
                 <div class="px-4 py-4 flex justify-between border-t border-zinc-300">
                     <p class="text-slate-700 text-xl font-semibold mb-px">Total</p>
-                    <p class="text-xl text-slate-700 font-semibold">$200</p>
+                    <p class="text-xl text-slate-700 font-semibold">${{ props.paymentDetails.total }}</p>
                 </div>
             </div>
         </div>
@@ -42,7 +42,16 @@
 </template>
 
 <script setup>
-
+const props = defineProps({
+    addressDetails: {
+        type: Object,
+        required: true,
+    },
+    paymentDetails: {
+        type: Object,
+        required: true,
+    },
+})
 </script>
 
 <style scoped></style>

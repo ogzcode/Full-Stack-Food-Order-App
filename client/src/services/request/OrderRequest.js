@@ -23,3 +23,7 @@ export const changeOrderStatus = async (orderData) => {
 export const getPendingOrders = async () => {
     return await request.get('/order/getPendingDataCount');
 }
+
+export const getUserPendingOrder = async () => {
+    return await request.get('/order/getUserPendingOrder');
+}

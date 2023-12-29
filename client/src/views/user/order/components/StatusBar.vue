@@ -1,26 +1,19 @@
 <template>
     <div class="border border-zinc-300 rounded-lg h-40 flex items-center px-16 mb-12">
         <div class="w-full h-2 rounded-full bg-zinc-100 relative flex justify-between items-center">
-            <div class="absolute w-1/2 h-full bg-orange-500"></div>
-            <div class="w-10 h-10 rounded-full bg-orange-500 flex justify-center items-center z-10 relative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-check2 fill-white"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-                </svg>
+            <div class="absolute h-full bg-orange-500" :class="`w-${getStatus(props.status)}/2`"></div>
+            <div class="w-10 h-10 rounded-full z-10 relative" :class="getActiveColor('received')">
+                <Icons v-if="getStatus(props.status) === 0" name="check2" :size="20" :style="'fill-white'" />
                 <span
                     class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-base font-semibold text-zinc-700 whitespace-nowrap">Received</span>
             </div>
-            <div class="w-10 h-10 rounded-full bg-orange-500 flex justify-center items-center z-10 relative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-check2 fill-white"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-                </svg>
+            <div class="w-10 h-10 rounded-full z-10 relative" :class="getActiveColor('prepared')">
+                <Icons v-if="getStatus(props.status) === 1" name="check2" :size="20" :style="'fill-white'" />
                 <span
                     class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-base font-semibold text-zinc-700 whitespace-nowrap">Prepared</span>
             </div>
-            <div class="w-10 h-10 rounded-full border-dashed border-2 border-orange-400 bg-zinc-100 block z-10 relative">
+            <div class="w-10 h-10 rounded-full z-10 relative" :class="getActiveColor('cargo')">
+                <Icons v-if="getStatus(props.status) === 2" name="check2" :size="20" :style="'fill-white'" />
                 <span
                     class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-base font-semibold text-zinc-700 whitespace-nowrap">Cargo</span>
             </div>
@@ -29,6 +22,31 @@
 </template>
 
 <script setup>
+import Icons from '../../../../components/Icons.vue';
+const props = defineProps({
+    status: {
+        type: String,
+        required: true,
+        default: '',
+    },
+})
+
+const getStatus = (status) => {
+    switch (status) {
+        case 'received':
+            return 0;
+        case 'prepared':
+            return 1;
+        case 'cargo':
+            return 2;
+        default:
+            return 0;
+    }
+}
+
+const getActiveColor = (value) => {
+    return value === props.status ? 'bg-orange-500 flex justify-center items-center' : 'border-dashed border-2 border-orange-400 bg-zinc-100';
+}
 
 </script>
 

@@ -10,17 +10,17 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-zinc-200">
-                <template v-for="(product, i) in data" :key="i">
+                <template v-for="(product, i) in props.orderProducts" :key="i">
                     <tr class="text-zinc-600 font-medium">
                         <td class="sm:px-8 px-4 sm:py-6 py-4">
                             <div class="flex items-center">
-                                <img :src="product.image" alt="Product Image" class="lg:w-20 sm:w-16 w-12 mr-2 rounded-full">
-                                {{ product.title }}
+                                <img :src="getImgURL(product.image)" alt="Product Image" class="lg:w-20 sm:w-16 w-12 mr-2 rounded-full">
+                                {{ product.name }}
                             </div>
                         </td>
                         <td class="sm:px-8 px-4 sm:py-6 py-4">{{ product.price }}</td>
                         <td class="sm:px-8 px-4 sm:py-6 py-4">{{ product.quantity }}</td>
-                        <td class="sm:px-8 px-4 sm:py-6 py-4">{{ product.total }}</td>
+                        <td class="sm:px-8 px-4 sm:py-6 py-4">{{ parseInt(product.price) * product.quantity }}</td>
                     </tr>
                 </template>
             </tbody>
@@ -29,54 +29,15 @@
 </template>
 
 <script setup>
-import image1 from '@/assets/images/landing/image-1.png'
-import image2 from '@/assets/images/landing/image-2.png'
-import image3 from '@/assets/images/landing/image-3.png'
-import image6 from '@/assets/images/landing/image-6.png'
-import image5 from '@/assets/images/landing/image-5.png'
+import { getImgURL } from "../../../../utils/util.js"
 
-const data = [
-    {
-        id: 1,
-        image: image1,
-        title: 'Product 1',
-        price: 100,
-        quantity: 2,
-        total: 200,
+const props = defineProps({
+    orderProducts: {
+        type: Object,
+        required: true,
     },
-    {
-        id: 2,
-        image: image2,
-        title: 'Product 2',
-        price: 100,
-        quantity: 2,
-        total: 200,
-    },
-    {
-        id: 3,
-        image: image3,
-        title: 'Product 3',
-        price: 100,
-        quantity: 2,
-        total: 200,
-    },
-    {
-        id: 4,
-        image: image6,
-        title: 'Product 4',
-        price: 100,
-        quantity: 2,
-        total: 200,
-    },
-    {
-        id: 5,
-        image: image5,
-        title: 'Product 5',
-        price: 100,
-        quantity: 2,
-        total: 200,
-    },
-]
+})
+
 </script>
 
 <style scoped></style>
