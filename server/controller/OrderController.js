@@ -2,126 +2,143 @@ import Order from "../model/Order.js";
 import User from "../model/User.js";
 import Product from "../model/Product.js";
 import OrderDetail from "../model/OrderDetail.js";
+import { getProductQuantityWithOrderDetail } from "../utils/util.js";
 
 export const createOrder = async (req, res) => {
-    const { products } = req.body;
-    const userDetail = req.user;
+    try {
+        const { products } = req.body;
+        const userDetail = req.user;
 
-    const user = await User.findUserById(userDetail.id);
+        const pendingOrder = await Order.getPendingOrderByUserId(userDetail.id);
 
-    if (user.role !== "user") {
-        return res.status(400).json({ message: "You are not allowed to create order." });
+        if (pendingOrder) {
+            return res.status(400).json({ message: "You already have a pending order." });
+        }
+
+        const user = await User.findUserById(userDetail.id);
+
+        let totalPrice = 0;
+        const productList = []
+        const orderDetail = [];
+
+        for (let product of products) {
+            let item = await Product.getProductById(product.id);
+            productList.push({ id: item.id });
+            totalPrice += parseInt(item.price) * product.quantity;
+            orderDetail.push({ productId: item.id, quantity: product.quantity });
+        }
+
+        await User.setOrderCount(user.id, user.orderCount + 1);
+        const order = await Order.createOrder({ userId: user.id, totalPrice: String(totalPrice), products: productList });
+
+        for (let item of orderDetail) {
+            await OrderDetail.createOrderDetail({ orderId: order.id, productId: item.productId, quantity: item.quantity });
+        }
+
+        return res.status(200).json({ message: "Order created successfully." });
     }
-
-    let totalPrice = 0;
-    const productList = []
-    const orderDetail = [];
-
-    for (let product of products) {
-        let item = await Product.getProductById(product.id);
-        productList.push({ id: item.id });
-        totalPrice += parseInt(item.price) * product.quantity;
-        orderDetail.push({ productId: item.id, quantity: product.quantity });
+    catch (error) {
+        return res.status(400).json({ message: error.message });
     }
-
-    await User.setOrderCount(user.id, user.orderCount + 1);
-    const order = await Order.createOrder({ userId: user.id, totalPrice: String(totalPrice), products: productList });
-
-    for (let item of orderDetail) {
-        await OrderDetail.createOrderDetail({ orderId: order.id, productId: item.productId, quantity: item.quantity });
-    }
-
-    return res.status(200).json({ message: "Order created successfully." });
 }
 
 export const getOrders = async (req, res) => {
-    const userDetail = req.user;
+    try {
+        const userDetail = req.user;
 
-    const user = await User.findUserById(userDetail.id);
+        const user = await User.findUserById(userDetail.id);
 
-    if (user.role !== "user") {
-        return res.status(400).json({ message: "You are not allowed to get orders." });
+        const orders = await Order.getOrdersByUserId(user.id, { sort: "desc" });
+
+        return res.status(200).json({ orders });
     }
-
-    const orders = await Order.getOrdersByUserId(user.id, { sort: "desc" });
-
-    return res.status(200).json({ orders });
+    catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
 }
 
 export const getOrderDetails = async (req, res) => {
-    const userDetail = req.user;
-    const { orderId } = req.params;
+    try {
+        const userDetail = req.user;
+        const { orderId } = req.params;
 
-    const user = await User.findUserById(userDetail.id);
+        const order = await Order.getOrderById(parseInt(orderId));
+        const orderDetails = await OrderDetail.getOrderDetailsByOrderId(order.id);
 
-    const order = await Order.getOrderById(parseInt(orderId));
-    const orderDetails = await OrderDetail.getOrderDetailsByOrderId(order.id);
+        getProductQuantityWithOrderDetail(order, orderDetails);
 
-    for (let orderDetail of orderDetails) {
-        let products = order.products.map((product) => {
-            if (product.id === orderDetail.productId) {
-                return { ...product, quantity: orderDetail.quantity };
-            }
-            else {
-                return product;
-            }
-        });
-
-        order.products = products;
+        return res.status(200).json({ products: order.products });
     }
-
-    return res.status(200).json({ products: order.products });
+    catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
 }
 
 export const changeOrderStatus = async (req, res) => {
-    const { status, orderId } = req.body;
+    try {
+        const { status, orderId } = req.body;
 
-    const order = await Order.getOrderById(parseInt(orderId));
+        const order = await Order.getOrderById(parseInt(orderId));
 
-    await Order.updateOrderStatus(order.id, status);
+        await Order.updateOrderStatus(order.id, status);
 
-    let message = "";
+        let message = "";
 
-    if (status === "completed") {
-        message = "Order confirmed successfully.";
+        if (status === "completed") {
+            message = "Order confirmed successfully.";
+        }
+        else if (status === "cancelled") {
+            message = "Order cancelled successfully.";
+        }
+
+
+        return res.status(200).json({ message });
     }
-    else if (status === "cancelled") {
-        message = "Order cancelled successfully.";
+    catch (error) {
+        return res.status(400).json({ message: error.message });
     }
-
-
-    return res.status(200).json({ message });
 }
 
 export const deleteAllOrders = async (req, res) => {
-    const userDetail = req.user;
-
-    const orderDetails = await OrderDetail.deleteAllOrderDetails();
-    const orders = await Order.deleteAllOrders();
-
-
-
-    return res.status(200).json({ message: "All orders deleted successfully." });
+    try {
+        const userDetail = req.user;
+        const orderDetails = await OrderDetail.deleteAllOrderDetails();
+        const orders = await Order.deleteAllOrders();
+        return res.status(200).json({ message: "All orders deleted successfully." });
+    }
+    catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
 }
 
 export const getAllOrders = async (req, res) => {
-    const userDetail = req.user;
+    try {
+        const userDetail = req.user;
 
-    const user = await User.findUserById(userDetail.id);
+        const user = await User.findUserById(userDetail.id);
 
-    if (user.role !== "admin") {
-        return res.status(400).json({ message: "You are not allowed to get all orders." });
+        if (user.role !== "admin") {
+            return res.status(400).json({ message: "You are not allowed to get all orders." });
+        }
+
+        const orders = await Order.getAllOrders();
+
+        return res.status(200).json({ orders });
     }
-
-    const orders = await Order.getAllOrders();
-
-    return res.status(200).json({ orders });
+    catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
 }
 
 export const getPendingDataCount = async (req, res) => {
-    const pendingOrderCount = await Order.getPendingOrderCount();
+    try {
+        const pendingOrderCount = await Order.getPendingOrderCount();
 
-    return res.status(200).json({ pendingOrderCount });
+        return res.status(200).json({ pendingOrderCount });
+    }
+    catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
 }
 
 export const getUserPendingOrder = async (req, res) => {
@@ -138,18 +155,7 @@ export const getUserPendingOrder = async (req, res) => {
 
         const orderDetails = await OrderDetail.getOrderDetailsByOrderId(order.id);
 
-        for (let orderDetail of orderDetails) {
-            let products = order.products.map((product) => {
-                if (product.id === orderDetail.productId) {
-                    return { ...product, quantity: orderDetail.quantity };
-                }
-                else {
-                    return product;
-                }
-            });
-
-            order.products = products;
-        }
+        getProductQuantityWithOrderDetail(order, orderDetails);
 
         return res.status(200).json({
             message: "Pending order retrieved successfully.",
@@ -163,6 +169,7 @@ export const getUserPendingOrder = async (req, res) => {
         });
     }
     catch (error) {
+        console.log(error);
         return res.status(400).json({ message: error.message });
     }
 }
