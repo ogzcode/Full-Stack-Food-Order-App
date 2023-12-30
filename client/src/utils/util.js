@@ -48,14 +48,14 @@ export const convertCurrncy = (value) => {
 
 export const getOrderStatusStyle = (status) => {
     switch (status) {
-        case 'pending':
-            return 'bg-yellow-100 text-yellow-800';
+        case 'received':
+            return 'bg-yellow-100 text-yellow-800 border border-yellow-400';
         case 'completed':
-            return 'bg-green-100 text-green-800';
+            return 'bg-green-100 text-green-800 border border-green-400';
         case 'cancelled':
-            return 'bg-red-100 text-red-800';
+            return 'bg-red-100 text-red-800 border border-red-400';
         default:
-            return 'bg-yellow-100 text-yellow-800';
+            return 'bg-yellow-100 text-yellow-800  border border-yellow-400';
     }
 }
 

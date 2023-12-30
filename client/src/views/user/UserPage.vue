@@ -92,11 +92,12 @@ const handleSubmitOrder = () => {
         .then((res) => {
             toastStore.showToast("success", "Order create successfully.");
             orderStore.setOrders([]);
-            orderDialog.value = false;
         })
         .catch((err) => {
-            toastStore.showToast("error", "Order create failed.");
+            toastStore.showToast("error", err.response.data.message);
         })
+        
+    orderDialog.value = false;
 }
 
 onUnmounted(() => {
