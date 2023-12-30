@@ -24,8 +24,8 @@ const toastStore = useToastStore();
 
 const props = defineProps({
     orderId: {
-        type: String,
-        required: true,
+        type: Number,
+        default: '',
     },
 });
 

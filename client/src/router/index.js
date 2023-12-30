@@ -81,7 +81,7 @@ const router = createRouter({
         {
           path: "old-orders",
           name: "OldOrders",
-          component: () => import("@/views/user/OldOrders.vue"),
+          component: () => import("@/views/user/orderHistory/OldOrders.vue"),
           meta: {
             requiresAuth: true,
           },

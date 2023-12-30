@@ -1,0 +1,27 @@
+<template>
+    <div v-for="(product, i) in orderDetails" :key="i"
+        class="border border-orange-500 rounded flex justify-between items-center mb-4">
+        <div class="flex items-center gap-x-2 h-20">
+            <img :src="getImgURL(product.image)" alt="" class="w-20" />
+            <div>
+                <p class="text-slate-800 text-lg font-medium">{{ product.name }}</p>
+                <p class="text-slate-600 font-medium text-xs">X {{ product.quantity }}</p>
+            </div>
+        </div>
+        <p class="text-orange-500 text-xl font-medium mr-4">${{ parseInt(product.price) *
+            product.quantity }}</p>
+    </div>
+</template>
+
+<script setup>
+import { getImgURL } from '../../../../utils/util';
+
+const props = defineProps({
+    orderDetails: {
+        type: Array,
+        default: () => []
+    }
+})
+</script>
+
+<style scoped></style>
