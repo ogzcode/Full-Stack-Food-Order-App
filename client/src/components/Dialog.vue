@@ -18,10 +18,10 @@
                 </div>
                 <div v-if="footerShow" class="flex justify-end py-4 px-6">
                     <button
-                        class="tracking-wide font-normal text-sm px-3 py-1 border border-slate-400 text-slate-800 rounded mr-2"
+                        class="font-normal text-sm px-3 py-1 border border-slate-400 text-slate-800 rounded mr-2"
                         @click="handleClose">{{ props.cancelText }}</button>
                     <button v-if="props.submitShow"
-                        class="tracking-wide text-sm px-3 py-1 rounded disabled:opacity-60 disabled:cursor-not-allowed"
+                        class="text-sm px-3 font-semibold py-1 rounded disabled:opacity-60 disabled:cursor-not-allowed"
                         :class="[buttonType[props.submitType]]" @click="props.onSubmit" :disabled="submitIsDisabled">
                         {{ props.submitText }}
                     </button>

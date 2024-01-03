@@ -1,5 +1,5 @@
 <template>
-    <div class="p-10 bg-slate-50 min-h-screen">
+    <div class="p-10 bg-white-50 min-h-screen">
         <DataTable>
             <template v-slot:headerActions>
 
