@@ -35,6 +35,10 @@ export const useProductStore = defineStore('product', () => {
         products.value[index] = updatedProduct
     }
 
+    const getProductById = (id) => {
+        return products.value.find(product => product.id === id)
+    }
+
     return {
         products,
         reset,
@@ -42,6 +46,7 @@ export const useProductStore = defineStore('product', () => {
         addProduct,
         deleteProduct,
         searchProduct,
-        updateProduct
+        updateProduct,
+        getProductById
     }
 })
