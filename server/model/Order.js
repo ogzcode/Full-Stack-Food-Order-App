@@ -70,6 +70,9 @@ class Order {
         return await prisma.order.findMany({
             where: {
                 userId,
+                status: {
+                    in: ['completed', 'cancelled'],
+                },
                 products: {
                     some: {
                         id: productId,
@@ -113,7 +116,11 @@ class Order {
     static async getPendingOrderCount() {
         return await prisma.order.count({
             where: {
-                status: "pending",
+                status: {
+                    not: {
+                        in: ["completed", "cancelled"]
+                    }
+                }
             },
         });
     }

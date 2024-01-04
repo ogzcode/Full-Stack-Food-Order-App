@@ -2,7 +2,7 @@ import fs from "fs";
 import prisma from "./prismaConfig.js";
 
 class Product {
-    static async createProduct({ name, price, description, image }) {
+    static async createProduct(name, price, description, image ) {
         return await prisma.product.create({
             data: {
                 name,

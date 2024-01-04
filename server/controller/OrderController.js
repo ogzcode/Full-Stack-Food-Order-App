@@ -90,7 +90,9 @@ export const changeOrderStatus = async (req, res) => {
         else if (status === "cancelled") {
             message = "Order cancelled successfully.";
         }
-
+        else {
+            message = "Order status updated successfully.";
+        }
 
         return res.status(200).json({ message });
     }

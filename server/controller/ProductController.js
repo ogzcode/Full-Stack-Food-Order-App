@@ -17,7 +17,7 @@ export const createAndUpdateProduct = async (req, res) => {
             image = req.file.filename;
         }
 
-        if (id) {
+        if (id !== "undefined" && id !== null && id !== "" && id !== "null") {
             const product = await Product.updateProduct(id, name, price, description, image);
 
             res.status(200).json({ product, message: "Product updated successfully." });
