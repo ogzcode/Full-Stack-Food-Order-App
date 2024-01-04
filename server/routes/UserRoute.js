@@ -8,6 +8,7 @@ import {
     updateUser,
     changePassword,
     getUserDetails,
+    updateAdminPassword
 } from '../controller/UserController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 
@@ -20,5 +21,6 @@ router.delete('/deleteUser/:id', authMiddleware, deleteUserById);
 router.delete('/deleteAccount/:password', authMiddleware, deleteAccount);
 router.patch('/updateUser', authMiddleware, updateUser);
 router.patch('/updatePassword', authMiddleware, changePassword);
+router.patch('/updateAdminPassword', authMiddleware, updateAdminPassword);
 
 export default router;
