@@ -68,6 +68,8 @@ const getStyleWithSeverity = () => {
             return "text-violet-500 border-violet-500";
         case "cyan":
             return "text-cyan-500 border-cyan-500";
+        case "secondary":
+            return "text-slate-600 border-slate-600";
         default:
             return "text-emerald-500 hover:text-emerald-600";
     }

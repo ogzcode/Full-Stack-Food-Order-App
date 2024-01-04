@@ -7,7 +7,7 @@ export const orderHeader = [
     },
     {   
         columnName: "User",
-        key: "name",
+        key: "username",
         width: "80px",
         sortEnabled: true,
     },
@@ -41,6 +41,6 @@ export const orderHeader = [
     {
         columnName: "Actions",
         key: "actions",
-        width: "160px",
+        width: "120px",
     }
 ];

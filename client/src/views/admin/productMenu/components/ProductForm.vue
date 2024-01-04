@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import FormInput from "../../../auth/components/FormInput.vue";
 
 const name = ref('');
@@ -50,6 +50,13 @@ onMounted(() => {
         description.value = props.selectedProduct.description;
         price.value = props.selectedProduct.price;
     }
+})
+
+onUnmounted(() => {
+    name.value = '';
+    description.value = '';
+    price.value = 0;
+    file.value = null;
 })
 
 const handleFileChange = (e) => {

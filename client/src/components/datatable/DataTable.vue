@@ -11,7 +11,7 @@
                 </div>
                 <input type="text" v-model="dataTableStore.searchQuery" @input="dataTableStore.searchItems()"
                     placeholder="Search..."
-                    class="block p-2 pl-10 text-sm text-slate-900 border border-slate-300 rounded-md w-80 bg-slate-50 outline-0" />
+                    class="block p-2 pl-10 text-sm text-slate-900 border border-slate-400 rounded-md w-80 bg-slate-50 outline-0" />
             </div>
             <div>
                 <slot name="headerActions"></slot>
