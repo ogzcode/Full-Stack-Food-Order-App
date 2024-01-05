@@ -24,3 +24,7 @@ export const changePassword = async (passwordData) => {
 export const getUserDetails = async () => {
     return await request.get('/user/getUserDetails');
 }
+
+export const updateAdminPassword = async (passwordData) => {
+    return await request.patch('/user/updateAdminPassword', passwordData);
+}

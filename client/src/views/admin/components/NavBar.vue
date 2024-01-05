@@ -1,6 +1,6 @@
 <template>
     <header class="min-h-[5rem] flex justify-between items-center px-12 border-b">
-        <div class="flex items-center gap-20">
+        <div class="flex items-center gap-4">
             <h1 class="text-4xl font-bold tracking-wide text-slate-800">Food<span class="text-orange-600">-ER</span></h1>
             <nav>
                 <router-link :to="{ name: 'Orders' }"
@@ -15,24 +15,34 @@
         </div>
         <div class="flex items-center">
             <div
-                class="border border-orange-600 text-orange-600 font-medium text-xs px-4 py-2 rounded-full tracking-wide relative">
-                Orders
+                class="border border-orange-600 text-orange-600 font-medium text-xs p-2 rounded-full tracking-wide relative">
+                <Icons name="bell-fill" :size="20" />
                 <span
-                    class="absolute -top-2 -right-2 text-white bg-orange-600 rounded-full flex justify-center items-center text-xs w-6 h-6 ">{{
-                        orderCount }}</span>
+                    class="absolute -top-2 -right-2 text-white bg-orange-600 rounded-full flex justify-center items-center text-xs w-6 h-6 ">
+                    {{ orderCount }}
+                </span>
             </div>
+            <button @click="handlePasswordDialog"
+                class="border mx-4 border-slate-600 text-slate-700 p-2 rounded-full cursor-pointer">
+                <Icons name="settings" :size="20" />
+            </button>
             <button @click="logout"
-                class="font-medium text-sm tracking-wide mx-8 px-6 py-2 rounded border border-red-600 text-red-600 flex items-center logout-btn">
+                class="font-medium text-sm tracking-wide px-4 py-2 rounded border border-red-600 text-red-600 flex items-center logout-btn">
                 <span>Logout</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                    class="bi bi-box-arrow-right relative left-2" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
-                    <path fill-rule="evenodd"
-                        d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
-                </svg></button>
+                <Icons name="box-arrow-right" :style="'ml-2'" :size="20" />
+            </button>
         </div>
     </header>
+
+    <Dialog :show="updatePasswordDialog" @close="handlePasswordDialog" header-title="Update Password" submit-text="Update"
+        submit-type="success" @submit="handleSubmit" :submit-is-disabled="(oldPassword === '' || newPassword === '')">
+        <template #body>
+            <div class="flex flex-col gap-4">
+                <FormInput :value="oldPassword" v-model:value="oldPassword" label="Old Password" />
+                <FormInput :value="newPassword" v-model:value="newPassword" label="New Password" />
+            </div>
+        </template>
+    </Dialog>
 </template>
 
 <script setup>
@@ -40,12 +50,27 @@ import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useQuery } from "@tanstack/vue-query";
 
-import { useAuth } from "../../../stores/auth";
+import Icons from '../../../components/Icons.vue';
+import Dialog from '../../../components/Dialog.vue';
+import FormInput from '../../auth/components/FormInput.vue';
 
+import { useAuth } from "../../../stores/auth";
+import { useToastStore } from '../../../stores/toast';
+
+import { updateAdminPassword } from '../../../services/request/UserRequest';
 import { getPendingOrders } from '../../../services/request/OrderRequest';
 
 const $route = useRoute();
 const authStore = useAuth();
+const toastStore = useToastStore();
+
+const updatePasswordDialog = ref(false);
+const newPassword = ref("");
+const oldPassword = ref("");
+
+const handlePasswordDialog = () => {
+    updatePasswordDialog.value = !updatePasswordDialog.value;
+}
 
 const { data: queryData } = useQuery({
     queryKey: ["pendingOrders"],
@@ -70,6 +95,29 @@ watch(queryData, (newData, oldData) => {
         orderCount.value = inner;
     }
 });
+
+const handleSubmit = () => {
+    const data = {
+        oldPassword: oldPassword.value,
+        newPassword: newPassword.value
+    }
+
+    updateAdminPassword(data)
+        .then((res) => {
+            toastStore.showToast("success", "Password updated successfully")
+
+
+        })
+        .catch((err) => {
+            console.log(err);
+            toastStore.showToast("error", "Something went wrong")
+        })
+
+    handlePasswordDialog();
+    oldPassword.value = "";
+    newPassword.value = "";
+}
+
 
 </script>
 
