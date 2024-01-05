@@ -4,10 +4,8 @@
         <div class="pt-12 flex gap-12 flex-wrap justify-around">
             <template v-for="(product, i) in productStore.searchProduct(searchQuery)" :key="i">
                 <ProductCard :price="product.price" :name="product.name" :description="product.description"
-                    :image="product.image" :rating="product.rating" @delete="handleDelete(product.id)"
-                    @update="handleUpdate(product)" 
-                    @open-comment-dialog="handleOpenCommentDialog(product)"
-                    />
+                    :image="product.image" :rating="product.rating" @delete="handleDeleteDialog(true, product.id)"
+                    @update="handleUpdate(product)" @open-comment-dialog="handleOpenCommentDialog(product)" />
             </template>
         </div>
     </div>
@@ -17,9 +15,18 @@
             <ProductForm @on-submit="handleSubmit" :selected-product="selectedProduct" />
         </template>
     </Dialog>
+
     <Dialog headerTitle="Comments" :show="showCommentDialog" :footer-show="false" @close="handleCommentDialog(false)">
         <template v-slot:body>
             <CommentList :product-id="selectedProduct?.id" @close-dialog="handleCommentDialog(false)" />
+        </template>
+    </Dialog>
+
+    <Dialog headerTitle="Delete Product" :show="showDeleteDialog" @close="handleDeleteDialog(false)" @submit="handleDelete">
+        <template v-slot:body>
+            <p>
+                Are you sure you want to delete this product?
+            </p>
         </template>
     </Dialog>
 </template>
@@ -40,28 +47,45 @@ const productStore = useProductStore();
 
 const showAddProductDialog = ref(false);
 const showCommentDialog = ref(false);
+const showDeleteDialog = ref(false);
 const selectedProduct = ref(null);
 const searchQuery = ref('');
 
 
 const handleChangeDialog = (value) => {
     showAddProductDialog.value = value
+
+    if (!value) {
+        selectedProduct.value = null;
+    }
 }
 
 const handleCommentDialog = (value) => {
     showCommentDialog.value = value
+
+    if (!value) {
+        selectedProduct.value = null;
+    }
+}
+
+const handleDeleteDialog = (value, product = null) => {
+    showDeleteDialog.value = value
+    selectedProduct.value = product;
 }
 
 
-const handleDelete = (id) => {
-    deleteProductById(id)
+const handleDelete = () => {
+    deleteProductById(selectedProduct.value.id)
         .then((res) => {
-            productStore.deleteProduct(id);
+            productStore.deleteProduct(selectedProduct.value.id);
             toastStore.showToast("success", res.data.message);
+            selectedProduct.value = null;
         })
         .catch((err) => {
             toastStore.showToast("error", err.response.data.message);
         });
+
+    handleDeleteDialog(false);
 }
 
 const handleUpdate = (product) => {

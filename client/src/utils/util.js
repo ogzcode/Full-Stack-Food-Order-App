@@ -1,7 +1,9 @@
 export const selectedOption = [
     { label: 'All', value: 'all' },
     { label: 'Completed', value: 'completed' },
-    { label: 'Pending', value: 'pending' },
+    { label: "Received", value: 'received'},
+    { label: "Prepared", value: 'prepared'},
+    { label: "Cargo", value: 'cargo'},
     { label: 'Cancelled', value: 'cancelled' }
 ]
 
@@ -9,10 +11,14 @@ export const getUpdatedStatus = (status) => {
     switch (status) {
         case 'completed':
             return 'Completed'
-        case 'pending':
-            return 'Pending'
         case 'cancelled':
             return 'Cancelled'
+        case 'received':
+            return 'Received'
+        case 'prepared':
+            return 'Prepared'
+        case 'cargo':
+            return 'Cargo'
         default:
             return 'Pending'
     }
@@ -54,6 +60,10 @@ export const getOrderStatusStyle = (status) => {
             return 'bg-green-100 text-green-800 border border-green-400';
         case 'cancelled':
             return 'bg-red-100 text-red-800 border border-red-400';
+        case 'prepared':
+            return 'bg-blue-100 text-blue-800 border border-blue-400';
+        case 'cargo':
+            return 'bg-purple-100 text-purple-800 border border-purple-400';
         default:
             return 'bg-yellow-100 text-yellow-800  border border-yellow-400';
     }

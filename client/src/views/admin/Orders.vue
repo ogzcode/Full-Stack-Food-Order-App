@@ -26,20 +26,38 @@
                 </span>
             </template>
             <template v-slot:status="{ data }">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium tracking-wide"
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium tracking-wide"
                     :class="[getOrderStatusStyle(data?.status)]">
                     {{ getUpdatedStatus(data.status) }}
                 </span>
             </template>
             <template v-slot:actions="{ data }">
-                <IconBtn icon-name="eye-fill" severity="violet" tooltip="View"
-                    @click="handleOrderDetails(data?.id)" />
-                <template v-if="data.status === 'pending'">
-                    <IconBtn icon-name="hand-thumbs-up-fill" severity="emerald" tooltip="Complete"
-                        @click="handleSetOrder({ orderId: data?.id, status: 'completed' })" />
-                    <IconBtn icon-name="trash-fill" severity="red" tooltip="Cancel"
-                        @click="handleSetOrder({ orderId: data?.id, status: 'cancelled' })" />
-                </template>
+                <IconBtn icon-name="eye-fill" severity="violet" tooltip="View" @click="handleOrderDetails(data?.id)" />
+                <SplitButton v-if="data.status !== 'cancelled' && data.status !== 'completed'">
+                    <template v-slot:actions>
+                        <button @click="handleSetOrder({ orderId: data?.id, status: 'prepared' })"
+                            class="flex items-center text-left text-blue-500 border-b hover:bg-blue-500 hover:text-white px-4 py-2 text-sm font-semibold">
+                            <Icons name="clock" :style="'mr-2'" />
+                            <span class="pb-px">Prepared</span>
+                        </button>
+                        <button @click="handleSetOrder({ orderId: data?.id, status: 'cargo' })"
+                            class="flex items-center text-left text-purple-500 border-b hover:bg-purple-500 hover:text-white px-4 py-2 text-sm font-semibold">
+                            <Icons name="truck" :style="'mr-2'" />
+                            <span class="pb-px">Cargo</span>
+                        </button>
+                        <button @click="handleSetOrder({ orderId: data?.id, status: 'completed' })"
+                            class="flex items-center text-left text-emerald-500 border-b hover:bg-emerald-500 hover:text-white px-4 py-2 text-sm font-semibold">
+                            <Icons name="hand-thumbs-up" :style="'mr-2'" />
+                            <span class="pb-px">Completed</span>
+                        </button>
+                        <button @click="handleSetOrder({ orderId: data?.id, status: 'cancelled' })"
+                            class="flex items-center text-left text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 text-sm font-semibold">
+                            <Icons name="trash" :style="'mr-2'" />
+                            <span class="pb-px">Cancelled</span>
+                        </button>
+
+                    </template>
+                </SplitButton>
             </template>
         </DataTable>
 
@@ -77,6 +95,8 @@ import Dialog from "../../components/Dialog.vue"
 import Select from "../../components/Select.vue";
 import DetailsDialogBody from "../user/components/DetailsDialogBody.vue";
 import IconBtn from "../../components/IconBtn.vue";
+import SplitButton from "../../components/SplitButton.vue";
+import Icons from "../../components/Icons.vue";
 
 import { orderHeader } from "./data/orderHeader";
 
@@ -122,8 +142,11 @@ const handleSetOrder = (value) => {
 
     if (value.status === 'completed') {
         handleCompleteDialog(true);
-    } else {
+    } else if (value.status === 'cancelled') {
         handleChangeDeleteDialaog(true);
+    }
+    else {
+        handleChangeStatus();
     }
 
 }
@@ -168,5 +191,4 @@ const handleChangeStatus = () => {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

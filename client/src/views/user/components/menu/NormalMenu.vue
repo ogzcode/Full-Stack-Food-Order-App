@@ -10,7 +10,7 @@
                     :class="[isRouteActive('Order')]">Order</router-link>
                 <router-link :to="{ name: 'OldOrders' }"
                     class="md:mx-6 mx-4 font-semibold tracking-wide hover:text-orange-600 transition"
-                    :class="[isRouteActive('OldHistory')]">Order History</router-link>
+                    :class="[isRouteActive('OldOrders')]">Order History</router-link>
                 <router-link :to="{ name: 'Settings' }"
                     class="md:mx-6 mx-4 font-semibold tracking-wide hover:text-orange-600 transition"
                     :class="[isRouteActive('Settings')]">Settings</router-link>
