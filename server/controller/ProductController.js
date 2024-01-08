@@ -9,6 +9,61 @@ const calculateProductRatings = async (products) => {
     }
 }
 
+/**
+ * @swagger
+ * /product/createAndUpdate:
+ *   post:
+ *     summary: Create or update a product.
+ *     tags:
+ *       - Products
+ *     parameters:
+ *       - in: body
+ *         name: productData
+ *         description: Product details for creation or update.
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *             price:
+ *               type: string
+ *             description:
+ *               type: string
+ *             id:
+ *               type: string
+ *     responses:
+ *       201:
+ *         description: Product created successfully.
+ *         content:
+ *           application/json:
+ *             example:
+ *               product:
+ *                 id: 1
+ *                 name: "Product A"
+ *                 price: "50.00"
+ *                 description: "Description of Product A"
+ *                 image: "product_a.jpg"
+ *                 message: "Product created successfully."
+ *       200:
+ *         description: Product updated successfully.
+ *         content:
+ *           application/json:
+ *             example:
+ *               product:
+ *                 id: 1
+ *                 name: "Product A"
+ *                 price: "50.00"
+ *                 description: "Updated description of Product A"
+ *                 image: "product_a_updated.jpg"
+ *                 message: "Product updated successfully."
+ *       500:
+ *         description: Internal server error during product creation or update.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Internal server error during product creation or update."
+ */
 export const createAndUpdateProduct = async (req, res) => {
     const { name, price, description, id } = req.body;
     let image = null;
@@ -28,10 +83,34 @@ export const createAndUpdateProduct = async (req, res) => {
             res.status(201).json({ product, message: "Product created successfully." });
         }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(404).json({ error: error.message });
     }
 }
 
+/**
+ * @swagger
+ * /product/all:
+ *   get:
+ *     summary: Get all products.
+ *     tags:
+ *       - Products
+ *     responses:
+ *       200:
+ *         description: All products retrieved successfully.
+ *         content:
+ *           application/json:
+ *             example:
+ *               products:
+ *                 - id: 1
+ *                   name: "Product A"
+ *                   price: "50.00"
+ *                   description: "Description of Product A"
+ *                   image: "product_a.jpg"
+ *                   rating: 4.5
+ *                   isFavority: false
+ *       404:
+ *         description: No products found.
+ */
 export const getAllProducts = async (req, res) => {
     try {
         const products = await Product.getAll();
@@ -44,6 +123,34 @@ export const getAllProducts = async (req, res) => {
     }
 }
 
+/**
+ * @swagger
+ * /product/user:
+ *   get:
+ *     summary: Get products for the authenticated user.
+ *     tags:
+ *       - Products
+ *     responses:
+ *       200:
+ *         description: Products for the user retrieved successfully.
+ *         content:
+ *           application/json:
+ *             example:
+ *               products:
+ *                 - id: 1
+ *                   name: "Product A"
+ *                   price: "50.00"
+ *                   description: "Description of Product A"
+ *                   image: "product_a.jpg"
+ *                   rating: 4.5
+ *                   isFavority: true
+ *       404:
+ *         description: No products found for the user.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "No products found for the user."
+ */
 export const getProductForUser = async (req, res) => {
     try {
         const products = await Product.getAll();
@@ -64,6 +171,46 @@ export const getProductForUser = async (req, res) => {
     }
 }
 
+
+/**
+ * @swagger
+ * /product/setFavority:
+ *   post:
+ *     summary: Set or unset a product as a favorite for the authenticated user.
+ *     tags:
+ *       - Products
+ *     parameters:
+ *       - in: body
+ *         name: favorityData
+ *         description: Favority details.
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             productId:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Favority set or unset successfully.
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Favority set successfully."
+ *               product:
+ *                 id: 1
+ *                 name: "Product A"
+ *                 price: "50.00"
+ *                 description: "Description of Product A"
+ *                 image: "product_a.jpg"
+ *                 rating: 4.5
+ *                 isFavority: true
+ *       404:
+ *         description: Product not found or error during favority operation.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Product not found or error during favority operation."
+ */
 export const setProductFavority = async (req, res) => {
     const { productId } = req.body;
 
@@ -86,6 +233,34 @@ export const setProductFavority = async (req, res) => {
     }
 }
 
+/**
+ * @swagger
+ * /product/delete/{id}:
+ *   delete:
+ *     summary: Delete a product by ID.
+ *     tags:
+ *       - Products
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID of the product to delete.
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product deleted successfully.
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Product deleted successfully."
+ *       404:
+ *         description: Product not found or error during deletion.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Product not found or error during deletion."
+ */
 export const deleteProduct = async (req, res) => {
     const { id } = req.params;
 
