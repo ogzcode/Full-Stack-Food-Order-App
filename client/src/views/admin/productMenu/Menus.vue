@@ -22,9 +22,10 @@
         </template>
     </Dialog>
 
-    <Dialog headerTitle="Delete Product" :show="showDeleteDialog" @close="handleDeleteDialog(false)" @submit="handleDelete">
+    <Dialog headerTitle="Delete Product" :show="showDeleteDialog" @close="handleDeleteDialog(false)" @submit="handleDelete"
+        submit-text="Delete" submit-type="danger">
         <template v-slot:body>
-            <p>
+            <p class="text text-slate-500">
                 Are you sure you want to delete this product?
             </p>
         </template>

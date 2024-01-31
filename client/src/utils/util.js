@@ -39,13 +39,17 @@ export const formatDateAndGetData = (data) => {
 
     copyData.forEach((item) => {
         const date = new Date(item.createdAt);
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
+        let day = addLeadingZero(date.getDay());
+        let month = addLeadingZero(date.getMonth() + 1);
         let year = date.getFullYear();
         item.createdAt = `${day}-${month}-${year}`;
     });
 
     return copyData;
+}
+
+const addLeadingZero = (number) => {
+    return number < 10 ? `0${number}` : `${number}`;
 }
 
 export const convertCurrncy = (value) => {
